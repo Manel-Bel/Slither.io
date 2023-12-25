@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="fr.uparis.informatique.cpoo5.junit5demo.TestJunit5Demo" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-11-20T06:09:37" hostname="SURFACE_8" time="0.018">
+<testsuite name="fr.uparis.informatique.cpoo5.junit5demo.TestJunit5Demo" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-12-25T22:44:29" hostname="SURFACE_8" time="0.019">
   <properties/>
-  <testcase name="testFonctionATester()" classname="fr.uparis.informatique.cpoo5.junit5demo.TestJunit5Demo" time="0.018"/>
+  <testcase name="testFonctionATester()" classname="fr.uparis.informatique.cpoo5.junit5demo.TestJunit5Demo" time="0.019"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
