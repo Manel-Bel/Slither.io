@@ -1,0 +1,47 @@
+@font-face{
+	font-family: ARCADECLASSIC;
+	src: url("../fonts/ARCADECLASSIC.ttf");
+}
+
+.root {
+	-fx-padding: 25;
+	-fx-background-color: #1B0144;
+	/* -fx-alignment: top-center; */
+}
+
+.VBox {
+	-fx-background-color: #1B0144;
+	-fx-alignment: center;
+}
+
+.button {
+	-fx-font-size: 30;
+	-fx-text-fill: #B8A508;
+	-fx-border-color: #B8A508;
+	-fx-background-color: black;
+	-fx-font-family: ARCADECLASSIC;
+	-fx-max-width: 300;
+	-fx-max-height: 400;
+}
+
+.button:hover{
+    -fx-background-color: #6C570D;
+    -fx-text-fill: white;
+    -fx-border-color: white;
+}
+
+/* .button:active{
+    transform: translateY(5px);
+} */
+/* color change when button pressed */
+.button:pressed{
+    -fx-background-color: #9E8F0D;
+    /* -fx-text-fill: white; */
+}
+
+#MenuTitle{
+	-fx-font-size: 100;
+	-fx-font-family: ARCADECLASSIC;
+	-fx-text-transfrom: uppercase;
+    -fx-text-fill: #B8A508;
+}

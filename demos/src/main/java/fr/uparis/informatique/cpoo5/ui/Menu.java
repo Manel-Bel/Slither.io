@@ -18,6 +18,7 @@ public class Menu {
     public Menu(Stage stage, double scale) {
         this.stage = stage;
         title = new Label("Menu");
+        title.setId("MenuTitle");
         root = new VBox(10);
         root.setMinWidth(1000 * scale + 2 * 50);
         root.setMinHeight(600 * scale);
@@ -37,6 +38,7 @@ public class Menu {
         root.getChildren().addAll(title, soloGame, multiplayer, exitBtn);
 
         scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/css/All.css").toExternalForm());
         stage.setScene(scene);
     }
 

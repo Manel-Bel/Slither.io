@@ -60,3 +60,11 @@ task jsondemo(type: JavaExec) {
 application {
     mainClass = 'fr.uparis.informatique.cpoo5.jfxdemo.HelloJavaFX'
 }
+
+sourceSets {
+	main {
+		resources {
+			srcDirs = ["src/main/ressources"]
+		}
+	}
+}
