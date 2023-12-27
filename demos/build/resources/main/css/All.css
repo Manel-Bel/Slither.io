@@ -41,7 +41,7 @@
 
 #MenuTitle{
 	-fx-font-size: 100;
-	/* -fx-font-family: ARCADECLASSIC; */
+	-fx-font-family: ARCADECLASSIC;
 	-fx-text-transfrom: uppercase;
     -fx-text-fill: #B8A508;
 }

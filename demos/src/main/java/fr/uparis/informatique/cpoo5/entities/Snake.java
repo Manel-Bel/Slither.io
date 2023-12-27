@@ -1,8 +1,11 @@
 package fr.uparis.informatique.cpoo5.entities;
 
-import javafx.scene.control.skin.TextInputControlSkin.Direction;
+// import javafx.scene.control.skin.TextInputControlSkin.Direction;
+import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
+
+import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public class Snake {
     private Rectangle snakeRec;
@@ -24,9 +27,19 @@ public class Snake {
         return this.direction;
     }
 
+    // get the body
+    public ArrayList<Rectangle> getBody() {
+        return this.body;
+    }
+
     // setting the direction of the snake
-    public void setDirection(Direction d) {
-        this.direction = d;
+    public void setDirection(KeyCode keyCode) {
+        this.direction = Direction.getDirection(keyCode);
+    }
+
+    // set opposite direction
+    public void switchDirection() {
+        this.direction = Direction.getOpposite(direction);
     }
 
     // to move the snake
@@ -49,7 +62,7 @@ public class Snake {
         }
         snakeRec.setX(snakeX);
         snakeRec.setY(snakeY);
-        System.out.println("direction set!!");
+        // System.out.println("direction set!!");
     }
 
     // check the colision

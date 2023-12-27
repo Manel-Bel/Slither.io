@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import fr.uparis.informatique.cpoo5.game.GameApp;
+import fr.uparis.informatique.cpoo5.game.Game;
 import javafx.geometry.Pos;
 
 public class Menu {
@@ -29,9 +29,9 @@ public class Menu {
         Button multiplayer = new Button("Multiplayer");
         Button exitBtn = new Button("Exit");
 
-        soloGame.setOnAction(e -> GameApp.launchSolitaire());
+        soloGame.setOnAction(e -> new Game(stage, scale));
 
-        multiplayer.setOnAction(e -> GameApp.launchNetworked());
+        multiplayer.setOnAction(e -> Game.launchNetworked());
 
         exitBtn.setOnAction(e -> System.exit(0));
 
