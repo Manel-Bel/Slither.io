@@ -15,7 +15,7 @@ public class Snake {
     private double snakeHeight = 20;
     private Direction direction;
     private ArrayList<Rectangle> body;
-    private double speed = 1;
+    private double speed = 20;
     private Color color;
 
     public Snake(int x, int y) {
@@ -81,7 +81,7 @@ public class Snake {
                 break;
             default:
                 System.out.println("Invalid direction");
-                break;
+                return;
         }
         snakeRec.setX(snakeX);
         snakeRec.setY(snakeY);
@@ -113,4 +113,11 @@ public class Snake {
     public void changeSpeed(int s) {
         speed += s;
     }
+
+    // ovoride the methode tostring
+    @Override
+    public String toString() {
+        return "Head is at [posX= " + snakeRec.getX() + ", posY=" + snakeRec.getY() + "]";
+    }
+
 }

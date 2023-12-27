@@ -27,4 +27,9 @@ public class Player {
     public Snake getSnake() {
         return this.snake;
     }
+
+    @Override
+    public String toString() {
+        return "Player: " + name + ", Score: " + score;
+    }
 }

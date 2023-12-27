@@ -26,20 +26,20 @@ public class Menu {
 
         // btn
         Button soloGame = new Button("Solo Mode");
-        Button multiplayer = new Button("Multiplayer");
+        Button online = new Button("Multiplayer");
         Button exitBtn = new Button("Exit");
 
         soloGame.setOnAction(e -> new Game(stage, scale));
 
-        multiplayer.setOnAction(e -> Game.launchNetworked());
+        online.setOnAction(e -> Game.launchNetworked());
 
         exitBtn.setOnAction(e -> System.exit(0));
 
-        root.getChildren().addAll(title, soloGame, multiplayer, exitBtn);
+        root.getChildren().addAll(title, soloGame, online, exitBtn);
 
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/All.css").toExternalForm());
-        stage.setScene(scene);
+        this.stage.setScene(scene);
     }
 
     public Scene getScene() {

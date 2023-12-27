@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Cell extends Rectangle {
-    private boolean isFree;
+    private boolean occupied;
     private Color color;
 
     private static final int gridWidth = 20;
@@ -17,7 +17,7 @@ public class Cell extends Rectangle {
 
         this.setX(x);
         this.setY(y);
-        this.isFree = true;
+        this.occupied = false;
         this.color = Color.BLACK;
         this.setFill(null);
         this.setStroke(color);
@@ -40,20 +40,25 @@ public class Cell extends Rectangle {
     }
 
     // check if the cell is free
-    public boolean isFree() {
-        return this.isFree;
+    public boolean isOccupied() {
+        return occupied;
     }
 
-    public void setFree(boolean free) {
-        this.isFree = free;
+    // change the value (if is is an occupied cell or not)
+    public void setOccupied(boolean b) {
+        this.occupied = b;
     }
 
     @Override
     public String toString() {
         return "Cell [posX=" + getX() + ", posY=" + getY() + ", width=" + getWidth() +
-                ", height=" + getHeight() + ", color=0x" + Integer.toHexString((int) (color).getRed()) +
-                Integer.toHexString((int) (color).getGreen()) + Integer.toHexString((int) (color).getBlue()) + "]";
+                ", height=" + getHeight() + " is occupied ?:" + occupied + "]";
     }
+    /*
+     * + ", color=0x" + Integer.toHexString((int) (color).getRed()) +
+     * Integer.toHexString((int) (color).getGreen()) + Integer.toHexString((int)
+     * (color).getBlue())
+     */
 
     public static int getCellWidth() {
         return gridWidth;
