@@ -2,6 +2,7 @@ package fr.uparis.informatique.cpoo5.entities;
 
 // import javafx.scene.control.skin.TextInputControlSkin.Direction;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
@@ -9,18 +10,30 @@ import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public class Snake {
     private Rectangle snakeRec;
-    private double snakeX = 50, snakeY = 50;
-    private final double snakeWidth = 20;
+    private int snakeX, snakeY;
+    private final int snakeWidth = 20;
     private double snakeHeight = 20;
     private Direction direction;
     private ArrayList<Rectangle> body;
     private double speed = 1;
+    private Color color;
 
-    public Snake() {
+    public Snake(int x, int y) {
+        // the head
+        snakeX = x;
+        snakeY = y;
         this.snakeRec = new Rectangle(this.snakeX, this.snakeY, this.snakeWidth, this.snakeHeight);
         this.body = new ArrayList<>();
         this.body.add(snakeRec);
-        this.direction = Direction.UP;
+        this.direction = null;
+        this.color = Color.GREEN;
+        snakeRec.setFill(color);
+    }
+
+    // set the color
+    public void setColor(Color c) {
+        this.color = c;
+        this.snakeRec.setFill(c);
     }
 
     public Direction getDirection() {
@@ -30,6 +43,11 @@ public class Snake {
     // get the body
     public ArrayList<Rectangle> getBody() {
         return this.body;
+    }
+
+    // get color
+    public Color getColor() {
+        return this.color;
     }
 
     // setting the direction of the snake
@@ -44,6 +62,10 @@ public class Snake {
 
     // to move the snake
     public void move() {
+        if (this.direction == null) {
+            // System.out.println("No direction assigned");
+            return;
+        }
         switch (direction) {
             case UP:
                 snakeY -= speed;
@@ -58,6 +80,7 @@ public class Snake {
                 snakeX += speed;
                 break;
             default:
+                System.out.println("Invalid direction");
                 break;
         }
         snakeRec.setX(snakeX);

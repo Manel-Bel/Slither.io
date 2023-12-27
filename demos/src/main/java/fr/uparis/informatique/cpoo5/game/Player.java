@@ -7,9 +7,9 @@ public class Player {
     private int score = 0;
     private Snake snake;
 
-    public Player(String name) {
+    public Player(String name, int x, int y) {
         this.name = name;
-        this.snake = new Snake();
+        this.snake = new Snake(x, y);
     }
 
     public void setScore(int p) {
