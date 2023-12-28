@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
+import fr.uparis.informatique.cpoo5.utils.Coordinate;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public class Snake {
@@ -177,5 +178,5 @@ public class Snake {
     public String toString() {
         return "Head is at [posX= " + snakeRec.getX() + ", posY=" + snakeRec.getY() + "]";
     }
-
 }
+

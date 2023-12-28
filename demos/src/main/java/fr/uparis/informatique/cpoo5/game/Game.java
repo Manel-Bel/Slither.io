@@ -74,11 +74,13 @@ public class Game {
             grid[cellX][cellY].setOccupied(true);
 
             Player p = new Player("Player"+i+"", sX, sY);
+
             p.addOccupiedCell(new Coordinate(cellX, cellY));
             players.add(p);
             
             gameRoot.getChildren().addAll(p.getSnake().getBody());
         }
+        players.get(1).getSnake().setColor(Color.RED);
         occupiedByFoodCell = null;
         
        
@@ -198,6 +200,42 @@ public class Game {
         // occupiedCells.add(occupiedByFoodCell);
         gameRoot.getChildren().add(food.getFood());
     }
+    private void updateIA(){
+            if (food == null) {
+            generateFood();
+    
+            }
+            System.out.println("fx ="+occupiedByFoodCell.x+" , fy= "+occupiedByFoodCell.y+" x ="+players.get(1).getOccupiedCells().get(0).x + " y= "+ players.get(1).getOccupiedCells().get(0).y);
+        if(occupiedByFoodCell.x == players.get(1).getOccupiedCells().get(0).x){
+            if(occupiedByFoodCell.y > players.get(1).getOccupiedCells().get(0).y){
+                players.get(1).getSnake().setDirection(KeyCode.RIGHT);
+            }else{
+                players.get(1).getSnake().setDirection(KeyCode.LEFT);
+            }
+        }else if (occupiedByFoodCell.y == players.get(1).getOccupiedCells().get(0).y) {
+            if(occupiedByFoodCell.x > players.get(1).getOccupiedCells().get(0).x){
+                players.get(1).getSnake().setDirection(KeyCode.DOWN);
+            }else{
+                players.get(1).getSnake().setDirection(KeyCode.UP);
+            }
+            
+        }else {
+            if(occupiedByFoodCell.x > players.get(1).getOccupiedCells().get(0).x){
+                players.get(1).getSnake().setDirection(KeyCode.DOWN);
+            }else{
+                players.get(1).getSnake().setDirection(KeyCode.UP);
+            }
+        }
+        players.get(1).getSnake().move(Menu.winWidth, Menu.winHeight);
+        
+         updateCell(1);
+         if (checkCollisionWithFood(1)) {
+            eatFood(1);
+        }
+       
+            
+        }
+     
 
     private void updateCell(int i) {
         Player p = players.get(i);
@@ -276,10 +314,13 @@ public class Game {
             // double deltaT = (now - last) / 1e9;
            
             if (now - last >= waitInterval) {
-              
-                for (int i=0;i<players.size();i++) {
-                    update(i);
-                }
+                updateIA();
+                 update(0);
+                //
+                // for (int i=0;i<players.size();i++) {
+
+                   
+                // }
                 
                
                 // i++;
