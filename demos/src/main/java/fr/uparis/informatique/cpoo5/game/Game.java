@@ -26,7 +26,7 @@ public class Game {
     private LinkedList<Coordinate> occupiedCells;
     private Coordinate occupiedByFoodCell;
 
-    public Game(Stage stage, double scale) {
+    public Game(Stage stage, double scale , int nbJoueur) {
         this.scale = scale;
         this.gameStage = stage;
         gameStage.setTitle("CPOO5 - Slither - Game");
@@ -40,30 +40,44 @@ public class Game {
         nRows = (600 * (int) scale) / Cell.getCellWidth();
         initGrid();
 
+        // init the snake
+        
+
         /*
          * position of the snake could be random on the grid
          * get the posX and posY of the picked grid
          */
-        Random rand = new Random();
-        int cellX = rand.nextInt(nRows);
-        int cellY = rand.nextInt(nCols);
-        int sX = (int) grid[cellX][cellY].getX();
-        int sY = (int) grid[cellX][cellY].getY();
-        // set that the gris is occupied
-        grid[cellX][cellY].setOccupied(true);
+     
 
         occupiedCells = new LinkedList<>();
-        occupiedCells.add(new Coordinate(cellX, cellY));
+        
 
-        occupiedByFoodCell = null;
+        
 
-        // creat first player and init the pos of its snake
-        Player p = new Player("Player0", sX, sY);
+        // creat  player and init the pos of its snake
+        Random rand = new Random();
         this.players = new ArrayList<>();
+        for(int i =0 ;i<nbJoueur ;i++){
+              
+            int cellX = rand.nextInt(nRows);
+            int cellY = rand.nextInt(nCols);
+            int sX = (int) grid[cellX][cellY].getX();
+            int sY = (int) grid[cellX][cellY].getY();
+            occupiedCells.add(new Coordinate(cellX, cellY));
+            // set that the gris is occupied
+            grid[cellX][cellY].setOccupied(true);
 
-        players.add(p);
+            Player p = new Player("Player"+i+"", sX, sY);
+            players.add(p);
+            gameRoot.getChildren().addAll(p.getSnake().getBody());
+        }
+        occupiedByFoodCell = null;
+        
+       
 
-        gameRoot.getChildren().addAll(p.getSnake().getBody());
+        
+
+        
 
         // int the scene
         gamScene = new Scene(gameRoot);
@@ -75,7 +89,7 @@ public class Game {
 
         gameStage.setScene(gamScene);
     }
-
+    //pour 2v2
     // init the grid for the game
     private void initGrid() {
         // calculate the number of rows and cells
@@ -102,15 +116,16 @@ public class Game {
         return null;
     }
 
-    private void update() {
-        players.get(0).getSnake().move();
-        if (players.get(0).getSnake().checkCollision(gameRoot.getWidth(), gameRoot.getHeight())) {
+    private void update(int i) {
+      
+        players.get(i).getSnake().move();
+        if (players.get(i).getSnake().checkCollision(gameRoot.getWidth(), gameRoot.getHeight())) {
             System.out.println("Collision!");
             // inverse the direction of the snake
-            players.get(0).getSnake().switchDirection();
+            players.get(i).getSnake().switchDirection();
         }
-        updateCell();
-        System.out.println(players.get(0).getSnake());
+        updateCell(i);
+        System.out.println(players.get(i).getSnake());
         if (food == null) {
             generateFood();
         }
@@ -131,19 +146,19 @@ public class Game {
         } while (grid[r][c].isOccupied());
         food = new Food((int) x, (int) y);
         grid[r][c].setOccupied(true);
-        System.out.println(grid[r][c]);
+        //System.out.println(grid[r][c]);
         occupiedByFoodCell = new Coordinate(r, c);
         // occupiedCells.add(occupiedByFoodCell);
         gameRoot.getChildren().add(food.getFood());
     }
 
-    private void updateCell() {
-        Direction d = players.get(0).getSnake().getDirection();
+    private void updateCell(int i) {
+        Direction d = players.get(i).getSnake().getDirection();
         if (d == null)
             return;
         // the head of the snake
-        int r = occupiedCells.get(0).x;
-        int c = occupiedCells.get(0).y;
+        int r = occupiedCells.get(i).x;
+        int c = occupiedCells.get(i).y;
         int privR = r;
         int privC = c;
         switch (d) {
@@ -163,11 +178,19 @@ public class Game {
         grid[privR][privC].setOccupied(false);
         // set to occupied the new cell
         grid[r][c].setOccupied(true);
-        System.out.println("the new cell occupied by the head of the snake " + grid[r][c]);
-        occupiedCells.get(0).x = r;
-        occupiedCells.get(0).y = c;
+        //System.out.println("the new cell occupied by the head of the snake " + grid[r][c]);
+        occupiedCells.get(i).x = r;
+        occupiedCells.get(i).y = c;
     }
-
+    private int passe_la_main(int i){
+        
+        if(i>=players.size()){
+           return 0;
+        }else{
+            return i++;
+        }
+        
+    }
     // classe for the animation of the game
     class Animation extends AnimationTimer {
         long last = 0;
@@ -181,8 +204,13 @@ public class Game {
                 return;
             }
             // double deltaT = (now - last) / 1e9;
+            int i =0;
             if (now - last >= waitInterval) {
-                update();
+              
+                update(0);
+                update(1);
+                // i++;
+                // timer.stop();
                 last = now;
             }
         }
