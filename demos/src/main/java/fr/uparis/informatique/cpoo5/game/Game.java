@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,8 @@ import java.util.Random;
 
 import fr.uparis.informatique.cpoo5.entities.Cell;
 import fr.uparis.informatique.cpoo5.entities.Food;
+import fr.uparis.informatique.cpoo5.entities.Snake;
+import fr.uparis.informatique.cpoo5.ui.Menu;
 import fr.uparis.informatique.cpoo5.utils.Coordinate;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
@@ -26,7 +29,7 @@ public class Game {
     private int nRows, nCols;
     private double scale;
     private Food food = null;
-    private LinkedList<Coordinate> occupiedCells;
+    
     private Coordinate occupiedByFoodCell;
 
     public Game(Stage stage, double scale , int nbJoueur) {
@@ -35,12 +38,12 @@ public class Game {
         gameStage.setTitle("CPOO5 - Slither - Game");
 
         this.gameRoot = new Pane();
-        gameRoot.setMinWidth(1000 * scale);
-        gameRoot.setMinHeight(600 * scale);
+        gameRoot.setPrefWidth(Menu.winWidth);
+        gameRoot.setPrefHeight(Menu.winHeight);
 
         // init the grid
-        nCols = (1000 * (int) scale) / Cell.getCellWidth();
-        nRows = (600 * (int) scale) / Cell.getCellWidth();
+        nCols = (Menu.winWidth * (int) scale) / Cell.getCellWidth();
+        nRows = (Menu.winHeight * (int) scale) / Cell.getCellWidth();
         initGrid();
 
         // init the snake
@@ -52,7 +55,7 @@ public class Game {
          */
      
 
-        occupiedCells = new LinkedList<>();
+        // occupiedCells = new LinkedList<>();
         
 
         
@@ -66,12 +69,14 @@ public class Game {
             int cellY = rand.nextInt(nCols);
             int sX = (int) grid[cellX][cellY].getX();
             int sY = (int) grid[cellX][cellY].getY();
-            occupiedCells.add(new Coordinate(cellX, cellY));
+            // occupiedCells.add(new Coordinate(cellX, cellY));
             // set that the gris is occupied
             grid[cellX][cellY].setOccupied(true);
 
             Player p = new Player("Player"+i+"", sX, sY);
+            p.addOccupiedCell(new Coordinate(cellX, cellY));
             players.add(p);
+            
             gameRoot.getChildren().addAll(p.getSnake().getBody());
         }
         occupiedByFoodCell = null;
@@ -127,6 +132,9 @@ public class Game {
             for (int j = 0; j < nCols; j++) {
                 grid[i][j] = new Cell(j * Cell.getCellWidth(), i * Cell.getCellWidth());
                 gameRoot.getChildren().add(grid[i][j]);
+                if (i == nRows - 1) {
+                    grid[i][j].setColor(Color.BLUEVIOLET);
+                }
             }
         }
     }
@@ -145,17 +153,28 @@ public class Game {
     }
 
     private void update(int i) {
-      
-        players.get(i).getSnake().move();
-        if (players.get(i).getSnake().checkCollision(gameRoot.getWidth(), gameRoot.getHeight())) {
-            System.out.println("Collision!");
-            // inverse the direction of the snake
-            players.get(i).getSnake().switchDirection();
-        }
-        updateCell(i);
-        System.out.println(players.get(i).getSnake());
-        if (food == null) {
+         if (food == null) {
             generateFood();
+    
+        }
+        players.get(i).getSnake().move(Menu.winWidth, Menu.winHeight);
+        // if (players.get(i).getSnake().checkCollision(gameRoot.getWidth(), gameRoot.getHeight())) {
+        //     System.out.println("Collision!");
+        //     // inverse the direction of the snake
+        //     players.get(i).getSnake().switchDirection();
+        // }
+        updateCell(i);
+        //System.out.println(players.get(i).getSnake());
+       // players.get(0).getSnake().move(Menu.winWidth, Menu.winWidth);
+        // // if (players.get(0).getSnake().checkCollision(gameRoot.getWidth(),
+        // // gameRoot.getHeight())) {
+        // // System.out.println("Collision!");
+        // // // inverse the direction of the snake
+        // // players.get(0).getSnake().switchDirection();
+        // // }
+        
+        if (checkCollisionWithFood(i)) {
+            eatFood(i);
         }
     }
 
@@ -181,44 +200,67 @@ public class Game {
     }
 
     private void updateCell(int i) {
-        Direction d = players.get(i).getSnake().getDirection();
+        Player p = players.get(i);
+        Direction d = p.getSnake().getDirection();
         if (d == null)
             return;
         // the head of the snake
-        int r = occupiedCells.get(i).x;
-        int c = occupiedCells.get(i).y;
+        int r = p.getOccupiedCells().get(0).x;
+        int c = p.getOccupiedCells().get(0).y;
         int privR = r;
         int privC = c;
         switch (d) {
             case UP:
                 r -= 1;
+                if (r < 0) {
+                    r = nRows - 1;
+                }
                 break;
             case RIGHT:
                 c += 1;
+                if (c >= nCols) {
+                    c = 0;
+                }
                 break;
             case DOWN:
                 r += 1;
+                if (r >= nRows) {
+                    r = 0;
+                }
                 break;
             case LEFT:
                 c -= 1;
+                if (c < 0) {
+                    c = nCols - 1;
+                }
                 break;
         }
         grid[privR][privC].setOccupied(false);
         // set to occupied the new cell
         grid[r][c].setOccupied(true);
         //System.out.println("the new cell occupied by the head of the snake " + grid[r][c]);
-        occupiedCells.get(i).x = r;
-        occupiedCells.get(i).y = c;
+        p.getOccupiedCells().get(0).x = r;
+        p.getOccupiedCells().get(0).y = c;
     }
-    private int passe_la_main(int i){
-        
-        if(i>=players.size()){
-           return 0;
-        }else{
-            return i++;
-        }
-        
+  
+
+    // checks the collision between the head of the snake and the food
+    private boolean checkCollisionWithFood(int i) {
+        return (players.get(i).getOccupiedCells().get(0).x == occupiedByFoodCell.x) &&
+                (players.get(i).getOccupiedCells().get(0).y == occupiedByFoodCell.y);
     }
+
+    // eatFood(): to remove the food from the frame and extend the snake
+    private void eatFood(int i) {
+        gameRoot.getChildren().remove(food.getFood());
+        food = null;
+        Snake s = players.get(i).getSnake();
+        s.extendBody();
+        // add the new part of the body to the game
+        gameRoot.getChildren().add(s.getBody().get(s.getBody().size() - 1));
+
+    }
+
     // classe for the animation of the game
     class Animation extends AnimationTimer {
         long last = 0;
