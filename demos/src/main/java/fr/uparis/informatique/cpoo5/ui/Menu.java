@@ -13,6 +13,8 @@ public class Menu {
     private Scene scene;
     private VBox root;
     private Label title;
+    public static final int winWidth = 1000;
+    public static final int winHeight = 600;
 
     // the menu of the game
     public Menu(Stage stage, double scale) {
@@ -20,8 +22,8 @@ public class Menu {
         title = new Label("Menu");
         title.setId("MenuTitle");
         root = new VBox(10);
-        root.setMinWidth(1000 * scale + 2 * 50);
-        root.setMinHeight(600 * scale);
+        root.setMinWidth(winWidth * scale);
+        root.setMinHeight(winHeight * scale);
         root.setAlignment(Pos.TOP_CENTER);
 
         // btn
