@@ -52,7 +52,21 @@ public class Snake {
 
     // setting the direction of the snake
     public void setDirection(KeyCode keyCode) {
-        this.direction = Direction.getDirection(keyCode);
+        /**
+         * TODO: if dirrection UP/DOWN: only can set RIGHT/LEFT
+         * TODO: if dirrection RIGHT/LEFT: only can set UP/DOWN
+         */
+        Direction d = Direction.getDirection(keyCode);
+        if((
+            (this.direction == Direction.UP || this.direction == Direction.DOWN) && 
+            (d == Direction.LEFT || d == Direction.RIGHT)
+            ) || (
+            (this.direction == Direction.LEFT || this.direction == Direction.RIGHT) && 
+            (d == Direction.UP || d == Direction.DOWN)
+            )
+            || this.direction == null
+        )
+            this.direction = d;
     }
 
     // set opposite direction

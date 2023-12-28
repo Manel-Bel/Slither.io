@@ -2,9 +2,11 @@ package fr.uparis.informatique.cpoo5.game;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -14,6 +16,7 @@ import fr.uparis.informatique.cpoo5.utils.Coordinate;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public class Game {
+    
     private Stage gameStage;
     private Scene gamScene;
     private Pane gameRoot;
@@ -82,7 +85,32 @@ public class Game {
         // int the scene
         gamScene = new Scene(gameRoot);
         gamScene.setOnKeyPressed(e -> {
-            players.get(0).getSnake().setDirection(e.getCode());
+            var keyCode = e.getCode();
+        
+            
+            if(players.size() > 1 ){
+                switch (keyCode) {
+                    case Z:
+                        players.get(1).getSnake().setDirection(KeyCode.UP);
+                        break;
+                    case S:
+                        players.get(1).getSnake().setDirection(KeyCode.DOWN);
+                        break;
+                    case Q:
+                        players.get(1).getSnake().setDirection(KeyCode.LEFT);
+                        break;
+                    case D:
+                        players.get(1).getSnake().setDirection(KeyCode.RIGHT);
+                        break;
+                    default:
+                        players.get(0).getSnake().setDirection(e.getCode());
+                        break;
+                }
+            }else{
+                players.get(0).getSnake().setDirection(e.getCode());
+            }
+
+        
         });
 
         animate();
@@ -204,11 +232,14 @@ public class Game {
                 return;
             }
             // double deltaT = (now - last) / 1e9;
-            int i =0;
+           
             if (now - last >= waitInterval) {
               
-                update(0);
-                update(1);
+                for (int i=0;i<players.size();i++) {
+                    update(i);
+                }
+                
+               
                 // i++;
                 // timer.stop();
                 last = now;
