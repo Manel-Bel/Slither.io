@@ -2,7 +2,7 @@ package fr.uparis.informatique.cpoo5.game;
 
 import fr.uparis.informatique.cpoo5.entities.Snake;
 
-public class Player {
+public final class Player {
     private final String name;
     private int score = 0;
     private Snake snake;

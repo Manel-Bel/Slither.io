@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
-public class Snake {
+public final class Snake {
     private Rectangle snakeRec;
     private int snakeX, snakeY;
     private final int snakeWidth = 20;
