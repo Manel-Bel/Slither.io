@@ -65,8 +65,7 @@ public class Game {
             
             gameRoot.getChildren().addAll(p.getSnake().getBody());
         }
-        players.get(1).getSnake().setColor(Color.RED);
-
+        
         // init the snake
         
 
@@ -101,6 +100,8 @@ public class Game {
         
             
             if(players.size() ==2 ){
+                players.get(1).getSnake().setColor(Color.RED);
+
                 switch (keyCode) {
                     case Z:
                         ((Snake) players.get(1).getSnake()).setDirectionP(KeyCode.UP);
