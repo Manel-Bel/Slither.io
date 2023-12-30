@@ -17,7 +17,7 @@ public class SnakeIA extends SnakeAbstract{
    
     
     // setting the direction of the snake
-    public void setDirection(Coordinate coordinateFood , Coordinate coordinateIA) {
+    public void setDirectionIA(Coordinate coordinateFood , Coordinate coordinateIA) {
         if(coordinateFood.x==coordinateIA.x){
             if(coordinateFood.y>coordinateIA.y){
                 this.direction = Direction.RIGHT;
@@ -43,7 +43,7 @@ public class SnakeIA extends SnakeAbstract{
 
     // to move the snake
     public void move(int widthBound, int heightBound , Coordinate coordinateFood ,Coordinate coordinateIA) {
-      setDirection(coordinateFood , coordinateIA);
+      setDirectionIA(coordinateFood , coordinateIA);
         if (this.direction == null) {
             return;
         }

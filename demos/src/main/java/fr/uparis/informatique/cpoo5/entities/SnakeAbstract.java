@@ -48,6 +48,9 @@ public abstract class SnakeAbstract {
     public void switchDirection() {
         this.direction = Direction.getOpposite(direction);
     }
+    public void setDirection(Direction dir){
+        this.direction = dir;
+    }
     
     // to move the snake
     public void move(int widthBound, int heightBound) {

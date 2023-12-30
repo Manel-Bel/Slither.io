@@ -19,7 +19,7 @@ public class Snake extends SnakeAbstract{
     
 
     // setting the direction of the snake
-    public void setDirection(KeyCode keyCode) {
+    public void setDirectionP(KeyCode keyCode) {
         /**
          * TODO: if dirrection UP/DOWN: only can set RIGHT/LEFT
          * TODO: if dirrection RIGHT/LEFT: only can set UP/DOWN
