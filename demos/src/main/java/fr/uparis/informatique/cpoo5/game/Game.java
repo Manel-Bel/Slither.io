@@ -1,11 +1,7 @@
 package fr.uparis.informatique.cpoo5.game;
 
-import javafx.animation.AnimationTimer;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -16,30 +12,21 @@ import fr.uparis.informatique.cpoo5.utils.Coordinate;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public class Game {
-    private Stage gameStage;
-    private Scene gamScene;
-    private Pane gameRoot;
+
     private ArrayList<Player> players;
-    private Animation timer;
     private Cell[][] grid;
     private int nRows, nCols;
-    private double scale;
     private Food food = null;
     private LinkedList<Coordinate> occupiedCells;
     private Coordinate occupiedByFoodCell;
+    private Pane gameRoot;
+    private boolean endOfGame;
 
-    public Game(Stage stage, double scale) {
-        this.scale = scale;
-        this.gameStage = stage;
-        gameStage.setTitle("CPOO5 - Slither - Game");
-
-        this.gameRoot = new Pane();
-        gameRoot.setPrefWidth(Menu.winWidth);
-        gameRoot.setPrefHeight(Menu.winHeight);
-
+    public Game(Pane gameRoot) {
+        this.gameRoot = gameRoot;
         // init the grid
-        nCols = (Menu.winWidth * (int) scale) / Cell.getCellWidth();
-        nRows = (Menu.winHeight * (int) scale) / Cell.getCellWidth();
+        nCols = (Menu.winWidth) / Cell.getCellWidth();
+        nRows = (Menu.winHeight) / Cell.getCellWidth();
         initGrid();
 
         /*
@@ -64,18 +51,8 @@ public class Game {
         this.players = new ArrayList<>();
 
         players.add(p);
-
         gameRoot.getChildren().addAll(p.getSnake().getBody());
 
-        // int the scene
-        gamScene = new Scene(gameRoot);
-        gamScene.setOnKeyPressed(e -> {
-            players.get(0).getSnake().setDirection(e.getCode());
-        });
-
-        animate();
-
-        gameStage.setScene(gamScene);
     }
 
     // init the grid for the game
@@ -87,39 +64,30 @@ public class Game {
             for (int j = 0; j < nCols; j++) {
                 grid[i][j] = new Cell(j * Cell.getCellWidth(), i * Cell.getCellWidth());
                 gameRoot.getChildren().add(grid[i][j]);
-                if (i == nRows - 1) {
-                    grid[i][j].setColor(Color.BLUEVIOLET);
-                }
+                // if (i == nRows - 1) {
+                // grid[i][j].setColor(Color.BLUEVIOLET);
+                // }
             }
         }
     }
 
-    private void animate() {
-        timer = new Animation();
-        timer.start();
-    }
-
-    public static Object launchSolitaire() {
-        return null;
-    }
-
-    public static Object launchNetworked() {
-        return null;
-    }
-
-    private void update() {
+    // return true if the game ended
+    public boolean update() {
         if (food == null) {
             generateFood();
         }
         players.get(0).getSnake().move(Menu.winWidth, Menu.winWidth);
         updateCell();
         // System.out.println(players.get(0).getSnake());
+        // check auto collision or death
         if (isAutoCollision(0)) {
-            timer.stop();
+            endOfGame = true;
+            return endOfGame;
         }
         if (checkCollisionWithFood()) {
             eatFood();
         }
+        return false;
     }
 
     // generate foor at a random position
@@ -213,30 +181,19 @@ public class Game {
         gameRoot.getChildren().add(s.getBody().get(s.getBody().size() - 1));
         // add the new occupied cell
         Rectangle r = s.getBody().get(s.getBody().size() - 1);
-        System.out.println("new body part [x= " + r.getX() + " y= " + r.getY() + "]");
+        System.out.println("new body part [x=" + r.getX() + " y=" + r.getY() + "]");
         Coordinate c = new Coordinate((int) (r.getY() / Cell.getCellWidth()), (int) (r.getX() / Cell.getCellWidth()));
         grid[c.row][c.col].setOccupied(true);
         System.out.println(c);
         occupiedCells.add(c);
     }
 
-    // classe for the animation of the game
-    class Animation extends AnimationTimer {
-        long last = 0;
-        private final long waitInterval = 500_000_000; // 400ms
-
-        @Override
-        public void handle(long now) {
-            // gameRoot.requestFocus();
-            if (last == 0) {
-                last = now;
-                return;
-            }
-            // double deltaT = (now - last) / 1e9;
-            if (now - last >= waitInterval) {
-                update();
-                last = now;
-            }
-        }
+    public boolean isGameEnded() {
+        return endOfGame;
     }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
 }
