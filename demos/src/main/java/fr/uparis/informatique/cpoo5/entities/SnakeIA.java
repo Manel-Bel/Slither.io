@@ -42,7 +42,7 @@ public class SnakeIA extends SnakeAbstract{
     
 
     // to move the snake
-    public void move(int widthBound, int heightBound , Coordinate coordinateFood ,Coordinate coordinateIA) {
+    public void moveP(int widthBound, int heightBound , Coordinate coordinateFood ,Coordinate coordinateIA) {
       setDirectionIA(coordinateFood , coordinateIA);
         if (this.direction == null) {
             return;

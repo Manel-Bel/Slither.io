@@ -32,7 +32,7 @@ public class Game {
     
     private Coordinate occupiedByFoodCell;
 
-    public Game(Stage stage, double scale ) {
+    public Game(Stage stage, double scale ,int nbJoueur) {
         this.scale = scale;
         this.gameStage = stage;
         gameStage.setTitle("CPOO5 - Slither - Game");
@@ -46,6 +46,27 @@ public class Game {
         nRows = (Menu.winHeight * (int) scale) / Cell.getCellWidth();
         initGrid();
 
+        Random rand = new Random();
+        this.players = new ArrayList<>();
+        for(int i =0 ;i<nbJoueur ;i++){
+              
+            int cellX = rand.nextInt(nRows);
+            int cellY = rand.nextInt(nCols);
+            int sX = (int) grid[cellX][cellY].getX();
+            int sY = (int) grid[cellX][cellY].getY();
+            // occupiedCells.add(new Coordinate(cellX, cellY));
+            // set that the gris is occupied
+            grid[cellX][cellY].setOccupied(true);
+
+            Player p = new Player("Player"+i+"", sX, sY);
+
+            p.addOccupiedCell(new Coordinate(cellX, cellY));
+            players.add(p);
+            
+            gameRoot.getChildren().addAll(p.getSnake().getBody());
+        }
+        players.get(1).getSnake().setColor(Color.RED);
+
         // init the snake
         
 
@@ -55,29 +76,7 @@ public class Game {
          */
      
 
-        // occupiedCells = new LinkedList<>();
-        
-
-        
-
-        // creat  player and init the pos of its snake
-        Random rand = new Random();
-        this.players = new ArrayList<>();
-       
-            int cellX = rand.nextInt(nRows);
-            int cellY = rand.nextInt(nCols);
-            int sX = (int) grid[cellX][cellY].getX();
-            int sY = (int) grid[cellX][cellY].getY();
-            // occupiedCells.add(new Coordinate(cellX, cellY));
-            // set that the gris is occupied
-            grid[cellX][cellY].setOccupied(true);
-
-            Player p = new Player("Player ", sX, sY);
-
-            p.addOccupiedCell(new Coordinate(cellX, cellY));
-            players.add(p);
-            
-            gameRoot.getChildren().addAll(p.getSnake().getBody());
+      
         
         
         occupiedByFoodCell = null;
@@ -90,11 +89,39 @@ public class Game {
 
         // int the scene
         gamScene = new Scene(gameRoot);
-        gamScene.setOnKeyPressed(e -> {((Snake) players.get(0).getSnake()).setDirectionP(e.getCode());});
-
+        //gamScene.setOnKeyPressed(e -> {((Snake) players.get(0).getSnake()).setDirectionP(e.getCode());});
+        initGame();
         animate();
 
         gameStage.setScene(gamScene);
+    }
+    private void initGame(){
+        gamScene.setOnKeyPressed(e -> {
+            var keyCode = e.getCode();
+        
+            
+            if(players.size() ==2 ){
+                switch (keyCode) {
+                    case Z:
+                        ((Snake) players.get(1).getSnake()).setDirectionP(KeyCode.UP);
+                        break;
+                    case S:
+                        ((Snake) players.get(1).getSnake()).setDirectionP(KeyCode.DOWN);
+                        break;
+                    case Q:
+                        ((Snake) players.get(1).getSnake()).setDirectionP(KeyCode.LEFT);
+                        break;
+                    case D:
+                        ((Snake) players.get(1).getSnake()).setDirectionP(KeyCode.RIGHT);
+                        break;
+                    default:
+                        ((Snake) players.get(0).getSnake()).setDirectionP(e.getCode());
+                        break;
+                }
+            }else{
+                ((Snake) players.get(0).getSnake()).setDirectionP(e.getCode());
+            }
+            });
     }
     
     //pour 2v2
@@ -132,13 +159,20 @@ public class Game {
             generateFood();
     
         }
-        players.get(0).getSnake().move(Menu.winWidth, Menu.winHeight);
+        for(int i=0;i<players.size();i++){
+            players.get(i).getSnake().move(Menu.winWidth, Menu.winHeight);
+            updateCell(players.get(i));
+            if (checkCollisionWithFood(players.get(i))) {
+            eatFood(players.get(i));
+        }
+        }
+       
         // if (players.get(i).getSnake().checkCollision(gameRoot.getWidth(), gameRoot.getHeight())) {
         //     System.out.println("Collision!");
         //     // inverse the direction of the snake
         //     players.get(i).getSnake().switchDirection();
         // }
-        updateCell();
+        //updateCell();
         //System.out.println(players.get(i).getSnake());
        // players.get(0).getSnake().move(Menu.winWidth, Menu.winWidth);
         // // if (players.get(0).getSnake().checkCollision(gameRoot.getWidth(),
@@ -148,9 +182,9 @@ public class Game {
         // // players.get(0).getSnake().switchDirection();
         // // }
         
-        if (checkCollisionWithFood()) {
-            eatFood();
-        }
+        // if (checkCollisionWithFood()) {
+        //     eatFood();
+        // }
     }
 
     // generate foor at a random position
@@ -176,8 +210,8 @@ public class Game {
   
      
 
-    private void updateCell() {
-        Player p = players.get(0);
+    private void updateCell(Player p) {
+      
         Direction d = p.getSnake().getDirection();
         if (d == null)
             return;
@@ -222,16 +256,16 @@ public class Game {
   
 
     // checks the collision between the head of the snake and the food
-    private boolean checkCollisionWithFood() {
-        return (players.get(0).getOccupiedCells().get(0).x == occupiedByFoodCell.x) &&
-                (players.get(0).getOccupiedCells().get(0).y == occupiedByFoodCell.y);
+    private boolean checkCollisionWithFood(Player p) {
+        return (p.getOccupiedCells().get(0).x == occupiedByFoodCell.x) &&
+                (p.getOccupiedCells().get(0).y == occupiedByFoodCell.y);
     }
 
     // eatFood(): to remove the food from the frame and extend the snake
-    private void eatFood() {
+    private void eatFood(Player p) {
         gameRoot.getChildren().remove(food.getFood());
         food = null;
-        Snake s = (Snake) players.get(0).getSnake();
+        Snake s = (Snake) p.getSnake();
         s.extendBody();
         players.get(0).setScore(1);
         // add the new part of the body to the game

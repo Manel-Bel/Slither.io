@@ -34,7 +34,7 @@ public class TwoPlayer {
         Button exitBtn = new Button("Retour");
 
         ia.setOnAction(e -> new GameIA(stage, scale));
-        twoPlayer.setOnAction(e->new Game(stage, scale));
+        twoPlayer.setOnAction(e->new Game(stage, scale,2));
 
         exitBtn.setOnAction(e -> new Menu(stage, scale));
 

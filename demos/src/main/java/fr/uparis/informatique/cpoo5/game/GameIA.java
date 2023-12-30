@@ -9,6 +9,7 @@ import fr.uparis.informatique.cpoo5.entities.Cell;
 import fr.uparis.informatique.cpoo5.entities.Food;
 import fr.uparis.informatique.cpoo5.entities.Snake;
 import fr.uparis.informatique.cpoo5.entities.SnakeAbstract;
+import fr.uparis.informatique.cpoo5.entities.SnakeIA;
 import fr.uparis.informatique.cpoo5.game.Game.Animation;
 import fr.uparis.informatique.cpoo5.ui.Menu;
 import fr.uparis.informatique.cpoo5.utils.Coordinate;
@@ -67,8 +68,9 @@ public class GameIA {
             int sY = (int) grid[cellX][cellY].getY();
             
             grid[cellX][cellY].setOccupied(true);
+            
             joueur=new Player("joueur 1", sX, sY);
-
+            joueur.addOccupiedCell(new Coordinate(cellX, cellY));
             
             int cellZ = rand.nextInt(nRows);
             int cellW = rand.nextInt(nCols);
@@ -76,6 +78,7 @@ public class GameIA {
             int sW = (int) grid[cellZ][cellW].getY();
 
             ia=new IA("AI", sZ, sW);
+            ia.addOccupiedCell(new Coordinate(cellZ, cellW));
         }
 
     private void initGrid() {
@@ -97,15 +100,11 @@ public class GameIA {
         timer.start();
     }
 
-    public static Object launchSolitaire() {
-        return null;
-    }
+  
 
  
 
-    public static Object launchNetworked() {
-        return null;
-    }
+   
      private void generateFood() {
         Random rand = new Random();
         int r = 0, c = 0;
@@ -132,7 +131,12 @@ public class GameIA {
             generateFood();
     
         }
-        joueur.getSnake().move(Menu.winWidth, Menu.winHeight);
+        if(joueur instanceof Player){
+            joueur.getSnake().move(Menu.winWidth, Menu.winHeight);
+        }else{
+            ((SnakeIA) joueur.getSnake()).moveP(Menu.winWidth, Menu.winHeight,occupiedByFoodCell,joueur.getOccupiedCells().get(0));
+        }
+       // joueur.getSnake().move(Menu.winWidth, Menu.winHeight,occupiedByFoodCell,joueur.getOccupiedCells());
         updateCell(joueur);
 
         if (checkCollisionWithFood(joueur)) {
