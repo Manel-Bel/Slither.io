@@ -124,6 +124,7 @@ public class Game {
 
         gameStage.setScene(gamScene);
     }
+    
     //pour 2v2
     // init the grid for the game
     private void initGrid() {
