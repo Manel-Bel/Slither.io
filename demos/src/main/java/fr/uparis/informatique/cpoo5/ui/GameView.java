@@ -1,10 +1,13 @@
 package fr.uparis.informatique.cpoo5.ui;
 
-import fr.uparis.informatique.cpoo5.game.Game;
+import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import fr.uparis.informatique.cpoo5.entities.Snake;
+import fr.uparis.informatique.cpoo5.game.Game;
+import fr.uparis.informatique.cpoo5.game.Player;
 
 public class GameView {
     private Stage gameStage;
@@ -23,7 +26,9 @@ public class GameView {
         gameRoot.setPrefWidth(Menu.winWidth * this.scale);
         gameRoot.setPrefHeight(Menu.winHeight * this.scale);
 
-        this.game = new Game(gameRoot);
+        this.game = new Game();
+        addGridToScreen();
+        addPlayerToTheScreen();
 
         // int the scene
         gamScene = new Scene(gameRoot);
@@ -33,12 +38,27 @@ public class GameView {
 
         animate();
         gameStage.setScene(gamScene);
-
     }
 
     private void animate() {
         timer = new Animation();
         timer.start();
+    }
+
+    // add the grid
+    private void addGridToScreen() {
+        for (int i = 0; i < game.getNrows(); i++) {
+            for (int j = 0; j < game.getNcols(); j++) {
+                gameRoot.getChildren().add(game.getGrid()[i][j]);
+            }
+        }
+    }
+
+    // add the snakes to th screen
+    public void addPlayerToTheScreen() {
+        for (Player p : game.getPlayers()) {
+            gameRoot.getChildren().addAll(p.getSnake().getBody());
+        }
     }
 
     public static Object launchSolitaire() {
@@ -47,6 +67,33 @@ public class GameView {
 
     public static Object launchNetworked() {
         return null;
+    }
+
+    // return true if the game ended
+    private boolean update() {
+        if (game.getFood() == null) {
+            System.out.println("gameview generation of food");
+            gameRoot.getChildren().add(game.generateFood());
+        }
+        // move all the snakes
+        for (Player p : game.getPlayers()) {
+            p.getSnake().move(Menu.winWidth, Menu.winHeight);
+            game.updateCell();
+
+            // check collision
+            if (game.isAutoCollision(0)) {
+                // endOfGame = true;
+                return true;
+            }
+            if (game.checkCollisionWithFood()) {
+                System.out.println("check coll with food gameView");
+                gameRoot.getChildren().remove(game.getFood().getFood());
+                game.eatFood();
+                Snake s = p.getSnake();
+                gameRoot.getChildren().add(s.getBody().get(s.getBody().size() - 1));
+            }
+        }
+        return false;
     }
 
     // classe for the animation of the game
@@ -63,7 +110,7 @@ public class GameView {
             }
             // double deltaT = (now - last) / 1e9;
             if (now - last >= waitInterval) {
-                if (game.update()) { // game ended
+                if (update()) { // game ended
                     System.out.println("collision animation ends...");
                     stop();
                 }
