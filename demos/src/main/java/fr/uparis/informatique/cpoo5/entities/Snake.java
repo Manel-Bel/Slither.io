@@ -8,19 +8,19 @@ import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public final class Snake {
     private Rectangle snakeRec;
-    private int snakeX, snakeY;
+    private double snakeX, snakeY;
+    private double angle;
     private final int snakeWidth = 20;
-    private int snakeHeight = 20;
     private Direction direction;
     private ArrayList<Rectangle> body;
     private double speed = 20;
     private Color color;
 
-    public Snake(int x, int y) {
+    public Snake(double x, double y) {
         // the head
         snakeX = x;
         snakeY = y;
-        this.snakeRec = new Rectangle(this.snakeX, this.snakeY, this.snakeWidth, this.snakeHeight);
+        this.snakeRec = new Rectangle(this.snakeX, this.snakeY, this.snakeWidth, this.snakeWidth);
         this.body = new ArrayList<>();
         this.body.add(snakeRec);
         this.direction = null;
@@ -62,31 +62,32 @@ public final class Snake {
     }
 
     // to move the snake
-    public void move() {
+    public void move(double deltaTime) {
         if (this.direction == null) {
             return;
         }
+        double distance = speed * deltaTime;
         switch (direction) {
             case UP:
-                snakeY -= speed;
+                snakeY -= distance;
                 if (snakeY < 0) {
-                    snakeY = Menu.winHeight - snakeHeight;
+                    snakeY = Menu.winHeight - snakeWidth;
                 }
                 break;
             case DOWN:
-                snakeY += speed;
-                if (snakeY > Menu.winHeight - snakeHeight) {
+                snakeY += distance;
+                if (snakeY > Menu.winHeight - snakeWidth) {
                     snakeY = 0;
                 }
                 break;
             case LEFT:
-                snakeX -= speed;
+                snakeX -= distance;
                 if (snakeX < 0) {
                     snakeX = Menu.winWidth - snakeWidth;
                 }
                 break;
             case RIGHT:
-                snakeX += speed;
+                snakeX += distance;
                 if (snakeX > Menu.winWidth - snakeWidth) {
                     snakeX = 0;
                 }
@@ -110,30 +111,29 @@ public final class Snake {
     }
 
     // check the colision
-    public boolean checkCollision(double winWidth, double winHeight) {
+    private boolean checkCollision(double winWidth, double winHeight) {
         for (Rectangle r : body) {
             if (r.getX() < 0 || r.getX() + snakeWidth > winWidth || r.getY() < 0
-                    || r.getY() + snakeHeight > winHeight) {
+                    || r.getY() + snakeWidth > winHeight) {
                 return true;
             }
         }
-        // the snake is in the frame
-        return false;
+        return false; // the snake is in the frame
     }
 
     // extend the length of the snake
     public void extendBody() {
-        Rectangle r = new Rectangle(snakeWidth, snakeHeight);
+        Rectangle r = new Rectangle(snakeWidth, snakeWidth);
         Rectangle last = body.get(body.size() - 1);
 
         switch (direction) {
             case UP:
                 r.setX(last.getX());
-                r.setY(last.getY() + snakeHeight);
+                r.setY(last.getY() + snakeWidth);
                 break;
             case DOWN:
                 r.setX(last.getX());
-                r.setY(last.getY() - snakeHeight);
+                r.setY(last.getY() - snakeWidth);
                 break;
             case LEFT:
                 r.setX(last.getX() + snakeWidth);

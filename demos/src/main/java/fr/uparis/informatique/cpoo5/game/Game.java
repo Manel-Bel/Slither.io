@@ -33,7 +33,7 @@ public class Game {
     }
 
     // return the row, col, posX, posy of a free cell
-    private int[] chooseFreeCell() {
+    private double[] chooseFreeCell() {
         Random rand = new Random();
         int r = 0, c = 0;
         double x, y;
@@ -44,22 +44,22 @@ public class Game {
             y = grid[r][c].getY();
 
         } while (grid[r][c].isOccupied());
-        return new int[] { r, c, (int) x, (int) y };
+        return new double[] { r, c, x, y };
     }
 
     // init players
     private void initPlayers() {
         int nbPlayer = (solo) ? 1 : 2;
         for (int i = 0; i < nbPlayer; i++) {
-            int[] tab = chooseFreeCell();
-            grid[tab[0]][tab[1]].setOccupied(true);
+            double[] tab = chooseFreeCell();
+            grid[(int) tab[0]][(int) tab[1]].setOccupied(true);
             DecisionMaker p;
             if (ia && i == 1)
                 p = new IA(tab[2], tab[3]);
             else
                 p = new Player("Player" + i, tab[2], tab[3]);
             DataPlayer c = new DataPlayer(p);
-            c.occupiedCells.add(new Coordinate(tab[0], tab[1]));
+            c.occupiedCells.add(new Coordinate((int) tab[0], (int) tab[1]));
             dataPlayers.add(c);
         }
     }
@@ -79,13 +79,13 @@ public class Game {
 
     // generate foor at a random position
     public Circle generateFood() {
-        int[] tab = chooseFreeCell();
+        double[] tab = chooseFreeCell();
         tab[2] += (Cell.getCellWidth() / 2);
         tab[3] += (Cell.getCellWidth() / 2);
         System.out.println("food x=" + tab[2] + ",y=" + tab[3]);
         food = new Food((int) tab[2], (int) tab[3]);
-        grid[tab[0]][tab[1]].setOccupied(true);
-        occupiedByFoodCell = new Coordinate(tab[0], tab[1]);
+        grid[(int) tab[0]][(int) tab[1]].setOccupied(true);
+        occupiedByFoodCell = new Coordinate((int) tab[0], (int) tab[1]);
         return food.getFood();
     }
 
@@ -151,6 +151,7 @@ public class Game {
         Snake s = data.player.getSnake();
         s.extendBody();
         data.player.setScore(1);
+        System.out.println(data.player);
         // add the new occupied cell
         Rectangle r = s.getBody().get(s.getBody().size() - 1);
         System.out.println("new body part [x=" + r.getX() + " y=" + r.getY() + "]");

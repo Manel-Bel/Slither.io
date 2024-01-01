@@ -10,7 +10,7 @@ public class IA implements DecisionMaker {
     private int score = 0;
     private Snake snake;
 
-    public IA(int x, int y) {
+    public IA(double x, double y) {
         name = "Bot";
         this.snake = new Snake(x, y);
         // set default direction to the snake
@@ -34,9 +34,9 @@ public class IA implements DecisionMaker {
     }
 
     @Override
-    public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS) {
+    public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS, double deltaT) {
         setDirectionSnake(coordinateFood, coordinateS);
-        snake.move();
+        snake.move(deltaT);
     }
 
     // setting the direction of the snake

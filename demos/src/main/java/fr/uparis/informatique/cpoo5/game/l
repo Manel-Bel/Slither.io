@@ -1,0 +1,32 @@
+class Animation extends AnimationTimer {
+    private long lastTime = 0;
+    private final double NANOS_TO_SECONDS = 1e9; // Facteur de conversion de nanosecondes en secondes
+
+    @Override
+    public void handle(long now) {
+        if (lastTime == 0) {
+            lastTime = now;
+            return;
+        }
+
+        double deltaTime = (now - lastTime) / NANOS_TO_SECONDS; // Calcul du delta de temps en secondes
+
+        if (update(deltaTime)) { // Envoi du delta de temps à la méthode update
+            System.out.println("Collision : Fin de jeu...");
+            stop();
+        }
+
+        lastTime = now;
+    }
+}
+private boolean update(double deltaTime) {
+    // ... Autres opérations de mise à jour du jeu
+
+    for (DataPlayer data : game.getDataPlayer()) {
+        data.player.moveSnake(game.getCoordFood(), data.occupiedCells.getFirst(), deltaTime);
+        game.updateCell(data);
+        // Reste du code...
+    }
+
+    // ... Reste de la méthode update
+}

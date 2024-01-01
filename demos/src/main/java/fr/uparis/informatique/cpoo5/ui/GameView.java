@@ -102,14 +102,14 @@ public class GameView {
     }
 
     // return true if the game ended
-    private boolean update() {
+    private boolean update(double deltaT) {
         if (game.getFood() == null) {
             System.out.println("gameview generation of food");
             gameRoot.getChildren().add(game.generateFood());
         }
         // move all the snakes
         for (DataPlayer data : game.getDataPlayer()) {
-            data.player.moveSnake(game.getCoordFood(), data.occupiedCells.getFirst());
+            data.player.moveSnake(game.getCoordFood(), data.occupiedCells.getFirst(), deltaT);
             game.updateCell(data);
             // check collision
             if (game.isAutoCollision(data)) {
@@ -130,7 +130,7 @@ public class GameView {
     // classe for the animation of the game
     class Animation extends AnimationTimer {
         long last = 0;
-        private final long waitInterval = 500_000_000; // 400ms
+        private final long waitInterval = 100_000_000; // 400ms
 
         @Override
         public void handle(long now) {
@@ -139,14 +139,14 @@ public class GameView {
                 last = now;
                 return;
             }
-            // double deltaT = (now - last) / 1e9;
-            if (now - last >= waitInterval) {
-                if (update()) { // game ended
-                    System.out.println("collision animation ends...");
-                    stop();
-                }
-                last = now;
+            double deltaT = (now - last) / 1e9;
+            // if (now - last >= waitInterval) {
+            if (update(deltaT)) { // game ended
+                System.out.println("collision animation ends...");
+                stop();
             }
+            last = now;
+            // }
         }
     }
 }
