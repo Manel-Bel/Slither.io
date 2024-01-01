@@ -1,6 +1,5 @@
 package fr.uparis.informatique.cpoo5.ui;
 
-import javafx.animation.Animation;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -8,6 +7,8 @@ import javafx.stage.Stage;
 import fr.uparis.informatique.cpoo5.entities.Snake;
 import fr.uparis.informatique.cpoo5.game.Game;
 import fr.uparis.informatique.cpoo5.game.Player;
+import fr.uparis.informatique.cpoo5.game.Game.DataPlayer;
+import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public class GameView {
     private Stage gameStage;
@@ -16,9 +17,12 @@ public class GameView {
     private double scale;
     private Animation timer;
     private Game game;
+    private boolean solo, ia;
 
-    public GameView(Stage stage, double scale) {
+    public GameView(Stage stage, double scale, boolean solo, boolean ia) {
         this.scale = scale;
+        this.solo = solo;
+        this.ia = ia;
         this.gameStage = stage;
         gameStage.setTitle("CPOO5 - Slither - Game");
 
@@ -26,15 +30,13 @@ public class GameView {
         gameRoot.setPrefWidth(Menu.winWidth * this.scale);
         gameRoot.setPrefHeight(Menu.winHeight * this.scale);
 
-        this.game = new Game();
+        this.game = new Game(solo, ia);
         addGridToScreen();
-        addPlayerToTheScreen();
+        addSnakesToTheScreen();
 
-        // int the scene
         gamScene = new Scene(gameRoot);
-        gamScene.setOnKeyPressed(e -> {
-            game.getPlayers().get(0).getSnake().setDirection(e.getCode());
-        });
+        // set the keys for the scene
+        setKeysScene();
 
         animate();
         gameStage.setScene(gamScene);
@@ -55,10 +57,40 @@ public class GameView {
     }
 
     // add the snakes to th screen
-    public void addPlayerToTheScreen() {
-        for (Player p : game.getPlayers()) {
-            gameRoot.getChildren().addAll(p.getSnake().getBody());
+    private void addSnakesToTheScreen() {
+        for (DataPlayer data : game.getDataPlayer()) {
+            gameRoot.getChildren().addAll(data.player.getSnake().getBody());
         }
+    }
+
+    // set the keys for the scene
+    private void setKeysScene() {
+        gamScene.setOnKeyPressed(e -> {
+            var keyCode = e.getCode();
+            if (!solo && !ia) {
+                Player p = (Player) game.getDataPlayer().getLast().player;
+                switch (keyCode) {
+                    case Z:
+                        p.getSnake().setDirection(Direction.UP);
+                        break;
+                    case S:
+                        p.getSnake().setDirection(Direction.DOWN);
+                        break;
+                    case Q:
+                        p.getSnake().setDirection(Direction.LEFT);
+                        break;
+                    case D:
+                        p.getSnake().setDirection(Direction.RIGHT);
+                        break;
+                    default:
+                        game.getDataPlayer().getFirst().player.getSnake()
+                                .setDirection(Direction.getDirection(e.getCode()));
+                        break;
+                }
+            } else
+                game.getDataPlayer().getFirst().player.getSnake()
+                        .setDirection(Direction.getDirection(e.getCode()));
+        });
     }
 
     public static Object launchSolitaire() {
@@ -76,20 +108,19 @@ public class GameView {
             gameRoot.getChildren().add(game.generateFood());
         }
         // move all the snakes
-        for (Player p : game.getPlayers()) {
-            p.getSnake().move(Menu.winWidth, Menu.winHeight);
-            game.updateCell();
-
+        for (DataPlayer data : game.getDataPlayer()) {
+            data.player.moveSnake(game.getCoordFood(), data.occupiedCells.getFirst());
+            game.updateCell(data);
             // check collision
-            if (game.isAutoCollision(0)) {
+            if (game.isAutoCollision(data)) {
                 // endOfGame = true;
                 return true;
             }
-            if (game.checkCollisionWithFood()) {
+            if (game.checkCollisionWithFood(data)) {
                 System.out.println("check coll with food gameView");
                 gameRoot.getChildren().remove(game.getFood().getFood());
-                game.eatFood();
-                Snake s = p.getSnake();
+                game.eatFood(data);
+                Snake s = data.player.getSnake();
                 gameRoot.getChildren().add(s.getBody().get(s.getBody().size() - 1));
             }
         }

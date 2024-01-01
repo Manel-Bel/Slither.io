@@ -1,11 +1,9 @@
 package fr.uparis.informatique.cpoo5.entities;
 
-// import javafx.scene.control.skin.TextInputControlSkin.Direction;
-import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
-
+import fr.uparis.informatique.cpoo5.ui.Menu;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public final class Snake {
@@ -51,17 +49,20 @@ public final class Snake {
     }
 
     // setting the direction of the snake
-    public void setDirection(KeyCode keyCode) {
-        this.direction = Direction.getDirection(keyCode);
-    }
-
-    // set opposite direction
-    public void switchDirection() {
-        this.direction = Direction.getOpposite(direction);
+    public void setDirection(Direction d) {
+        /**
+         * if dirrection UP/DOWN: only can set RIGHT/LEFT
+         * if dirrection RIGHT/LEFT: only can set UP/DOWN
+         */
+        if (this.direction == null || ((this.direction == Direction.UP || this.direction == Direction.DOWN) &&
+                (d == Direction.LEFT || d == Direction.RIGHT))
+                || ((this.direction == Direction.LEFT || this.direction == Direction.RIGHT) &&
+                        (d == Direction.UP || d == Direction.DOWN)))
+            this.direction = d;
     }
 
     // to move the snake
-    public void move(int widthBound, int heightBound) {
+    public void move() {
         if (this.direction == null) {
             return;
         }
@@ -69,24 +70,24 @@ public final class Snake {
             case UP:
                 snakeY -= speed;
                 if (snakeY < 0) {
-                    snakeY = heightBound - snakeHeight;
+                    snakeY = Menu.winHeight - snakeHeight;
                 }
                 break;
             case DOWN:
                 snakeY += speed;
-                if (snakeY > heightBound - snakeHeight) {
+                if (snakeY > Menu.winHeight - snakeHeight) {
                     snakeY = 0;
                 }
                 break;
             case LEFT:
                 snakeX -= speed;
                 if (snakeX < 0) {
-                    snakeX = widthBound - snakeWidth;
+                    snakeX = Menu.winWidth - snakeWidth;
                 }
                 break;
             case RIGHT:
                 snakeX += speed;
-                if (snakeX > widthBound - snakeWidth) {
+                if (snakeX > Menu.winWidth - snakeWidth) {
                     snakeX = 0;
                 }
                 break;

@@ -19,7 +19,7 @@ public class Menu {
     public Menu(Stage stage, double scale) {
         this.stage = stage;
         title = new Label("Menu");
-        title.setId("MenuTitle");
+        title.setId("Title");
         root = new VBox(10);
         root.setMinWidth(winWidth * scale);
         root.setMinHeight(winHeight * scale);
@@ -27,16 +27,19 @@ public class Menu {
 
         // btn
         Button soloGame = new Button("Solo Mode");
+
+        Button twoPlayer = new Button("2 joueurs");
         Button online = new Button("Multiplayer");
         Button exitBtn = new Button("Exit");
 
-        soloGame.setOnAction(e -> new GameView(stage, scale));
+        soloGame.setOnAction(e -> new GameView(stage, scale, true, false));
+        twoPlayer.setOnAction(e -> new TwoPlayer(stage, scale));
 
         online.setOnAction(e -> GameView.launchNetworked());
 
         exitBtn.setOnAction(e -> System.exit(0));
 
-        root.getChildren().addAll(title, soloGame, online, exitBtn);
+        root.getChildren().addAll(title, soloGame, twoPlayer, online, exitBtn);
 
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/All.css").toExternalForm());

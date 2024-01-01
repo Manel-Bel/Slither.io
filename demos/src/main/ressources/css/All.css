@@ -39,7 +39,7 @@
     /* -fx-text-fill: white; */
 }
 
-#MenuTitle{
+#Title{
 	-fx-font-size: 100;
 	-fx-font-family: ARCADECLASSIC;
 	-fx-text-transfrom: uppercase;

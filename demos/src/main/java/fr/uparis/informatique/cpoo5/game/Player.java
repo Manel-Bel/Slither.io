@@ -1,8 +1,11 @@
 package fr.uparis.informatique.cpoo5.game;
 
-import fr.uparis.informatique.cpoo5.entities.Snake;
+import java.util.LinkedList;
 
-public final class Player {
+import fr.uparis.informatique.cpoo5.entities.Snake;
+import fr.uparis.informatique.cpoo5.utils.Coordinate;
+
+public final class Player implements DecisionMaker {
     private final String name;
     private int score = 0;
     private Snake snake;
@@ -12,24 +15,25 @@ public final class Player {
         this.snake = new Snake(x, y);
     }
 
+    @Override
     public void setScore(int p) {
         this.score += p;
     }
 
+    @Override
     public int getScore() {
         return this.score;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
+    @Override
     public Snake getSnake() {
         return this.snake;
     }
 
     @Override
-    public String toString() {
-        return "Player: " + name + ", Score: " + score;
+    public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS) {
+        // move the snake directly
+        snake.move();
     }
+
 }
