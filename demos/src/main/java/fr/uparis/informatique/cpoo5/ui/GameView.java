@@ -139,14 +139,15 @@ public class GameView {
                 last = now;
                 return;
             }
-            double deltaT = (now - last) / 1e9;
-            // if (now - last >= waitInterval) {
-            if (update(deltaT)) { // game ended
-                System.out.println("collision animation ends...");
-                stop();
+
+            if (now - last >= waitInterval) {
+                double deltaT = (now - last) / 1e9;
+                if (update(deltaT)) { // game ended
+                    System.out.println("collision animation ends...");
+                    stop();
+                }
+                last = now;
             }
-            last = now;
-            // }
         }
     }
 }

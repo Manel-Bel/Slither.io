@@ -3,7 +3,7 @@ package fr.uparis.informatique.cpoo5.entities;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Cell extends Rectangle {
+public final class Cell extends Rectangle implements Entity {
     private boolean occupied;
     private Color color;
 

@@ -3,7 +3,7 @@ package fr.uparis.informatique.cpoo5.entities;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Food {
+public final class Food implements Entity {
 
     private Circle foodCircle;
     private int foodX, foodY;

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import fr.uparis.informatique.cpoo5.ui.Menu;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
-public final class Snake {
+public final class Snake implements Entity {
     private Rectangle snakeRec;
     private double snakeX, snakeY;
     private double angle;
@@ -23,7 +23,7 @@ public final class Snake {
         this.snakeRec = new Rectangle(this.snakeX, this.snakeY, this.snakeWidth, this.snakeWidth);
         this.body = new ArrayList<>();
         this.body.add(snakeRec);
-        this.direction = null;
+        this.direction = Direction.NONE;
         this.color = Color.GREEN;
         snakeRec.setFill(color);
     }
@@ -54,7 +54,7 @@ public final class Snake {
          * if dirrection UP/DOWN: only can set RIGHT/LEFT
          * if dirrection RIGHT/LEFT: only can set UP/DOWN
          */
-        if (this.direction == null || ((this.direction == Direction.UP || this.direction == Direction.DOWN) &&
+        if (this.direction == Direction.NONE || ((this.direction == Direction.UP || this.direction == Direction.DOWN) &&
                 (d == Direction.LEFT || d == Direction.RIGHT))
                 || ((this.direction == Direction.LEFT || this.direction == Direction.RIGHT) &&
                         (d == Direction.UP || d == Direction.DOWN)))
@@ -63,10 +63,8 @@ public final class Snake {
 
     // to move the snake
     public void move(double deltaTime) {
-        if (this.direction == null) {
-            return;
-        }
         double distance = speed * deltaTime;
+        // double distance = speed;
         switch (direction) {
             case UP:
                 snakeY -= distance;
@@ -149,8 +147,6 @@ public final class Snake {
         }
 
         // position the new rec at the last rec
-        // r.setX(body.get(body.size() - 1).getX());
-        // r.setY(body.get(body.size() - 1).getY() + snakeHeight);
         body.add(r);
     }
 
@@ -164,5 +160,4 @@ public final class Snake {
     public String toString() {
         return "Head is at [posX= " + snakeRec.getX() + ", posY=" + snakeRec.getY() + "]";
     }
-
 }

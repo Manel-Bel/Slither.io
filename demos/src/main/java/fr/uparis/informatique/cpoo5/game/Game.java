@@ -55,7 +55,7 @@ public class Game {
             grid[(int) tab[0]][(int) tab[1]].setOccupied(true);
             DecisionMaker p;
             if (ia && i == 1)
-                p = new IA(tab[2], tab[3]);
+                p = new AI(tab[2], tab[3]);
             else
                 p = new Player("Player" + i, tab[2], tab[3]);
             DataPlayer c = new DataPlayer(p);
@@ -91,8 +91,6 @@ public class Game {
 
     public void updateCell(DataPlayer data) {
         Direction d = data.player.getSnake().getDirection();
-        if (d == null)
-            return;
         // the head of the snake
         int headR = data.occupiedCells.get(0).row;
         int headC = data.occupiedCells.get(0).col;
@@ -110,6 +108,8 @@ public class Game {
             case LEFT:
                 headC = (headC - 1 + nCols) % nCols;
                 break;
+            default:
+                return;
         }
         // set free the last cell of the grid
         grid[data.occupiedCells.getLast().row][data.occupiedCells.getLast().col].setOccupied(false);

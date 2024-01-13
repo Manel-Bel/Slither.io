@@ -38,4 +38,9 @@ public final class Player implements DecisionMaker {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return "Player : " + name + ", Score : " + score;
+    }
+
 }

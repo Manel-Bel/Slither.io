@@ -13,6 +13,5 @@ public class Coordinate {
     @Override
     public String toString() {
         return "[row=" + row + ", col=" + col + "]";
-
     }
 }

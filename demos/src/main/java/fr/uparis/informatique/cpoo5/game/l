@@ -30,3 +30,115 @@ private boolean update(double deltaTime) {
 
     // ... Reste de la méthode update
 }
+public class Snake {
+    private double x, y; // Position actuelle du serpent
+    private double speed; // Vitesse du serpent en pixels par seconde
+    private Direction direction; // Direction actuelle du serpent
+
+    // ...
+
+    public void update(double deltaTime) {
+        // deltaTime représente le temps écoulé depuis la dernière mise à jour
+        double distance = speed * deltaTime; // Distance à parcourir
+
+        // Mettre à jour les coordonnées en fonction de la direction et de la distance
+        switch (direction) {
+            case UP:
+                y -= distance;
+                break;
+            case DOWN:
+                y += distance;
+                break;
+            case LEFT:
+                x -= distance;
+                break;
+            case RIGHT:
+                x += distance;
+                break;
+            // Autres cas pour les directions diagonales si nécessaire
+        }
+        
+        // Mettre à jour la position du serpent sur l'écran avec les nouvelles coordonnées (x, y)
+        // ...
+    }
+
+    // Méthode pour définir la direction du serpent
+    public void setDirection(Direction newDirection) {
+        // Mettre à jour la direction
+        // ...
+    }
+}
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class SnakeGame {
+
+    private static final int MAX_X = 800; // Largeur maximale de l'écran
+    private static final int MAX_Y = 600; // Hauteur maximale de l'écran
+
+    private List<Snake> snakes; // Liste des serpents du jeu
+
+    public SnakeGame(int numberOfPlayers) {
+        snakes = new ArrayList<>();
+        generateSnakes(numberOfPlayers);
+    }
+
+    private void generateSnakes(int numberOfPlayers) {
+        Random random = new Random();
+
+        for (int i = 0; i < numberOfPlayers; i++) {
+            // Génère une nouvelle position pour le serpent
+            double x = random.nextDouble() * MAX_X;
+            double y = random.nextDouble() * MAX_Y;
+
+            // Vérifie si cette position chevauche d'autres serpents déjà créés
+            boolean overlapping = checkOverlap(x, y);
+
+            // Si la position chevauche, génère une nouvelle position
+            while (overlapping) {
+                x = random.nextDouble() * MAX_X;
+                y = random.nextDouble() * MAX_Y;
+                overlapping = checkOverlap(x, y);
+            }
+
+            // Crée un nouveau serpent avec la position générée
+            Snake snake = new Snake(x, y);
+            snakes.add(snake);
+        }
+    }
+
+    private boolean checkOverlap(double x, double y) {
+        // Vérifie si la nouvelle position chevauche d'autres serpents existants
+        for (Snake existingSnake : snakes) {
+            double distance = Math.sqrt(Math.pow((x - existingSnake.getX()), 2) +
+                                        Math.pow((y - existingSnake.getY()), 2));
+            if (distance < Snake.SNAKE_SIZE) {
+                // Les serpents se chevauchent
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Classe représentant un serpent
+    static class Snake {
+        private static final double SNAKE_SIZE = 20.0;
+        private double x, y;
+
+        public Snake(double x, double y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public double getY() {
+            return y;
+        }
+    }
+}
+

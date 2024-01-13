@@ -3,6 +3,7 @@ package fr.uparis.informatique.cpoo5.utils;
 import javafx.scene.input.KeyCode;
 
 public enum Direction {
+    NONE,
     UP,
     RIGHT,
     DOWN,
@@ -19,9 +20,8 @@ public enum Direction {
             case LEFT:
                 return Direction.LEFT;
             default:
-                break;
+                return Direction.NONE;
         }
-        return null;
     }
 
     // get opposite direction
@@ -35,6 +35,8 @@ public enum Direction {
                 return Direction.RIGHT;
             case RIGHT:
                 return Direction.LEFT;
+            default:
+                break;
         }
         return d;
     }

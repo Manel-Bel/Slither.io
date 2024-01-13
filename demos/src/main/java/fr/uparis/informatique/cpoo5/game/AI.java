@@ -5,13 +5,11 @@ import fr.uparis.informatique.cpoo5.utils.Coordinate;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 import javafx.scene.paint.Color;
 
-public class IA implements DecisionMaker {
-    private final String name;
+public final class AI implements DecisionMaker {
     private int score = 0;
     private Snake snake;
 
-    public IA(double x, double y) {
-        name = "Bot";
+    public AI(double x, double y) {
         this.snake = new Snake(x, y);
         // set default direction to the snake
         snake.setDirection(Direction.RIGHT);
@@ -60,6 +58,11 @@ public class IA implements DecisionMaker {
                 snake.setDirection(Direction.UP);
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "AI Score : " + score;
     }
 
 }
