@@ -6,7 +6,7 @@ public enum Direction {
     UP,
     RIGHT,
     DOWN,
-    LEFT;
+    LEFT, UP_LEFT, DOWN_LEFT, DOWN_RIGHT;
 
     public static Direction getDirection(KeyCode keyCode) {
         switch (keyCode) {

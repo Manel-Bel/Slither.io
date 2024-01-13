@@ -11,7 +11,7 @@ public interface DecisionMaker {
 
     public Snake getSnake();
 
-    public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS);
+    public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS ,double width,double heigth);
 
     // public void setDirectionSnake(KeyCode e, Coordinate coordinateFood,
     // Coordinate coordinateS);

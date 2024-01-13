@@ -32,10 +32,10 @@ public class Menu {
         Button online = new Button("Multiplayer");
         Button exitBtn = new Button("Exit");
 
-        soloGame.setOnAction(e -> new GameView(stage, scale, true, false));
+        soloGame.setOnAction(e -> new GameViewD(stage, scale ,true, false));
         twoPlayer.setOnAction(e -> new TwoPlayer(stage, scale));
 
-        online.setOnAction(e -> GameView.launchNetworked());
+        //online.setOnAction(e -> GameView.launchNetworked());
 
         exitBtn.setOnAction(e -> System.exit(0));
 

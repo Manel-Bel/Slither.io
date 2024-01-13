@@ -1,10 +1,10 @@
 package fr.uparis.informatique.cpoo5.utils;
 
-public class Coordinate {
-    public int row;
-    public int col;
+public class Coordinate{
+    public double row;
+    public double col;
 
-    public Coordinate(int row, int col) {
+    public Coordinate(double row, double col) {
         this.row = row;
         this.col = col;
     }

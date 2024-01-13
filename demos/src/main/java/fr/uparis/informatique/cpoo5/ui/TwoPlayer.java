@@ -29,8 +29,8 @@ public class TwoPlayer {
         Button twoPlayer = new Button("2 Players");
         Button exitBtn = new Button("Return");
 
-        ia.setOnAction(e -> new GameView(stage, scale, false, true));
-        twoPlayer.setOnAction(e -> new GameView(stage, scale, false, false)); // nb player
+        // ia.setOnAction(e -> new GameView(stage, scale, false, true));
+        // twoPlayer.setOnAction(e -> new GameView(stage, scale, false, false)); // nb player
         exitBtn.setOnAction(e -> new Menu(stage, scale));
 
         root.getChildren().addAll(title, ia, twoPlayer, exitBtn);

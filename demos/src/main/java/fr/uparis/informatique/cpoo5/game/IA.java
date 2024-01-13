@@ -34,9 +34,9 @@ public class IA implements DecisionMaker {
     }
 
     @Override
-    public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS) {
+    public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS ,double width,double heigth) {
         setDirectionSnake(coordinateFood, coordinateS);
-        snake.move();
+        snake.move(1,width,heigth);
     }
 
     // setting the direction of the snake

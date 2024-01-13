@@ -18,12 +18,13 @@ public class Game {
     private boolean solo, ia;
 
     public Game(boolean solo, boolean ia) {
+       // this.food=new Food(nRows, nCols);
         this.solo = solo;
         this.ia = ia;
         // init the grid
         nCols = (Menu.winWidth) / Cell.getCellWidth();
         nRows = (Menu.winHeight) / Cell.getCellWidth();
-        initGrid();
+        //initGrid();
 
         occupiedByFoodCell = null;
 
@@ -51,15 +52,15 @@ public class Game {
     private void initPlayers() {
         int nbPlayer = (solo) ? 1 : 2;
         for (int i = 0; i < nbPlayer; i++) {
-            int[] tab = chooseFreeCell();
-            grid[tab[0]][tab[1]].setOccupied(true);
-            DecisionMaker p;
-            if (ia && i == 1)
-                p = new IA(tab[2], tab[3]);
-            else
-                p = new Player("Player" + i, tab[2], tab[3]);
+           // int[] tab = chooseFreeCell();
+            //grid[tab[0]][tab[1]].setOccupied(true);
+             DecisionMaker p;
+            // if (ia && i == 1)
+            //     p = new IA(tab[2], tab[3]);
+            // else
+                p = new Player("Player" + i, 0,100);
             DataPlayer c = new DataPlayer(p);
-            c.occupiedCells.add(new Coordinate(tab[0], tab[1]));
+            c.occupiedCells.add(new Coordinate(0,100));
             dataPlayers.add(c);
         }
     }
@@ -76,16 +77,42 @@ public class Game {
             }
         }
     }
+    private double [] generateCoord(double width,double heigth){
+        Random rand = new Random();
+      double [] tab=new double[2];
+   
+           tab[0] = rand.nextDouble(width);
+            tab[1] = rand.nextDouble(heigth);
+            return tab;
+          
+
+        
+    }
 
     // generate foor at a random position
-    public Circle generateFood() {
-        int[] tab = chooseFreeCell();
-        tab[2] += (Cell.getCellWidth() / 2);
-        tab[3] += (Cell.getCellWidth() / 2);
-        System.out.println("food x=" + tab[2] + ",y=" + tab[3]);
-        food = new Food((int) tab[2], (int) tab[3]);
-        grid[tab[0]][tab[1]].setOccupied(true);
+    public Circle generateFood(double width ,double heigth) {
+       
+        //System.out.println("food x=" + tab[2] + ",y=" + tab[3]);
+        double [] tab = generateCoord(width, heigth);
+        food = new Food(tab[0], tab[1]);
+       
         occupiedByFoodCell = new Coordinate(tab[0], tab[1]);
+        return food.getFood();
+    }
+     public Circle generateFoodD() {
+        Random rand = new Random();
+        double r = 0, c = 0;
+        double x, y;
+        
+            r = rand.nextDouble(500);
+            c = rand.nextDouble(500);
+            // x = grid[r][c].getX();
+            // y = grid[r][c].getY();
+
+        
+        food = new Food(r,c);
+       
+        occupiedByFoodCell = new Coordinate(r,c);
         return food.getFood();
     }
 
@@ -94,8 +121,8 @@ public class Game {
         if (d == null)
             return;
         // the head of the snake
-        int headR = data.occupiedCells.get(0).row;
-        int headC = data.occupiedCells.get(0).col;
+        double headR = data.occupiedCells.get(0).row;
+        double headC = data.occupiedCells.get(0).col;
         // int privR = r,privC = c;
         switch (d) {
             case UP:
@@ -112,7 +139,7 @@ public class Game {
                 break;
         }
         // set free the last cell of the grid
-        grid[data.occupiedCells.getLast().row][data.occupiedCells.getLast().col].setOccupied(false);
+        //grid[data.occupiedCells.getLast().row][data.occupiedCells.getLast().col].setOccupied(false);
         // update the cells of the body
         for (int i = data.occupiedCells.size() - 1; i > 0; i--) {
             // occupiedCells.set(i, occupiedCells.get(i - 1));
@@ -120,16 +147,37 @@ public class Game {
             data.occupiedCells.get(i).col = data.occupiedCells.get(i - 1).col;
         }
         // set to occupied the new cell (head of the snake)
-        grid[headR][headC].setOccupied(true);
+        //grid[headR][headC].setOccupied(true);
         data.occupiedCells.get(0).row = headR;
         data.occupiedCells.get(0).col = headC;
     }
 
     // checks the collision between the head of the snake and the food
-    public boolean checkCollisionWithFood(DataPlayer data) {
-        return (data.occupiedCells.get(0).row == occupiedByFoodCell.row) &&
-                (data.occupiedCells.get(0).col == occupiedByFoodCell.col);
+    // public boolean checkCollisionWithFood(DataPlayer data ,coordinate food) {
+    //     if(data.player.getSnake().getSnackX()>=food.getX() && data.player.getSnake().getSnackX()>=food.getX() ){
+    //         return true;
+    //     }
+    //     return (data.occupiedCells.get(0).row == occupiedByFoodCell.row) &&
+    //             (data.occupiedCells.get(0).col == occupiedByFoodCell.col);
+    // }
+    public boolean checkCollisionWithFood(DataPlayer data ) {
+        double snakeLeft = data.player.getSnake().getSnackX();
+        double snakeRight = snakeLeft + 20; // Snake width
+        double snakeTop = data.player.getSnake().getSnackY();
+        double snakeBottom = snakeTop + 20; // Snake height
+    
+        double foodLeft = food.getX();
+        double foodRight = foodLeft + 20; // Food width
+        double foodTop = food.getY();
+        double foodBottom = foodTop + 20; // Food height
+    
+        // Vérification de la collision
+        boolean collisionX = snakeLeft < foodRight && snakeRight > foodLeft;
+        boolean collisionY = snakeTop < foodBottom && snakeBottom > foodTop;
+    
+        return collisionX && collisionY;
     }
+    
 
     public boolean isAutoCollision(DataPlayer data) {
         // normally we retrive the cells based of the snake
@@ -154,8 +202,8 @@ public class Game {
         // add the new occupied cell
         Rectangle r = s.getBody().get(s.getBody().size() - 1);
         System.out.println("new body part [x=" + r.getX() + " y=" + r.getY() + "]");
-        Coordinate c = new Coordinate((int) (r.getY() / Cell.getCellWidth()), (int) (r.getX() / Cell.getCellWidth()));
-        grid[c.row][c.col].setOccupied(true);
+        Coordinate c = new Coordinate( (r.getY() / Cell.getCellWidth()),  (r.getX() / Cell.getCellWidth()));
+        //grid[c.row][c.col].setOccupied(true);
         System.out.println(c);
         data.occupiedCells.add(c);
     }

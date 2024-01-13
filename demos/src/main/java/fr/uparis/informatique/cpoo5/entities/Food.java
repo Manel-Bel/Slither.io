@@ -6,11 +6,11 @@ import javafx.scene.shape.Circle;
 public class Food {
 
     private Circle foodCircle;
-    private int foodX, foodY;
+    private double foodX, foodY;
     private Color color;
     private final double size;
 
-    public Food(int x, int y) {
+    public Food(double x, double y) {
         size = 5;
         foodX = x;
         foodY = y;
@@ -24,21 +24,21 @@ public class Food {
     }
 
     // get position x
-    public int getX() {
+    public double getX() {
         return foodX;
     }
 
     // get position Y
-    public int getY() {
+    public double getY() {
         return foodY;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.foodX = x;
         foodCircle.setCenterX(x);
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.foodY = y;
         foodCircle.setCenterY(y);
     }
