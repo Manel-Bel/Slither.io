@@ -22,6 +22,9 @@ import fr.uparis.informatique.cpoo5.game.Player;
 import fr.uparis.informatique.cpoo5.game.Game.DataPlayer;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
+/*
+ * GameView : for modeling the Scene of the game
+ */
 public class GameView {
     private Stage gameStage;
     private Scene gamScene;
@@ -35,6 +38,17 @@ public class GameView {
     private PauseWin pauseWin;
     private Scene privScene;
 
+    /*
+     * Constructs a new instance of the `GameView` class.
+     * 
+     * @param stage The primary stage of the application.
+     * 
+     * @param scale The scale factor for the game view.
+     * 
+     * @param solo Indicates whether the game is played in solo mode
+     * 
+     * @param ia Indicates whether the game includes artificial intelligence
+     */
     public GameView(Stage stage, double scale, boolean solo, boolean ia) {
         this.scale = scale;
         this.solo = solo;
@@ -67,6 +81,11 @@ public class GameView {
         gameStage.setScene(gamScene);
     }
 
+    /**
+     * creat the animation timer for the game
+     * 
+     * @author : Belguenbour Manel
+     */
     private void animate() {
         root.requestFocus();
         if (timer == null) {
@@ -141,8 +160,12 @@ public class GameView {
         return null;
     }
 
-    // return true if the game ended
-    private boolean update() {
+    /**
+     * update the loop of the game
+     * 
+     * @author : Belguenbour Manel
+     */
+    public boolean update() {
         if (game.getFood() == null) {
             System.out.println("gameview generation of food");
             gameRoot.getChildren().add(game.generateFood());
@@ -170,7 +193,11 @@ public class GameView {
         return false;
     }
 
-    // classe for the animation of the game
+    /*
+     * The Animation class represents the animation timer for the game
+     * 
+     * @author : Belguenbour Manel
+     */
     class Animation extends AnimationTimer {
         long last = 0;
         private final long waitInterval = 400_000_000; // 400ms
@@ -193,13 +220,22 @@ public class GameView {
         }
     }
 
-    // pause class
+    /*
+     * The PauseWin class represents the pause window in the game.
+     * 
+     * @author : Belguenbour Manel
+     */
     private class PauseWin {
         private Stage pauseStage;
         private Scene pauseSc;
         private VBox root;
         private Button quitBtn, resumeBtn;
 
+        /*
+         * Constructs a new instance of the PauseWin class.
+         * 
+         * @author : Belguenbour Manel
+         */
         public PauseWin() {
             this.root = new VBox(10);
             this.root.setMinWidth(250);
@@ -229,6 +265,11 @@ public class GameView {
 
         }
 
+        /*
+         * handle the event keys for the buttons
+         * 
+         * @author : Belguenbour Manel
+         */
         private void handleBtn() {
             pauseStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override

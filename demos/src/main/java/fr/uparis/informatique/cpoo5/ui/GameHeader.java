@@ -10,6 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+/*
+ * GameHeader : The header of the game includes details like the names 
+ * of the players and their scores.
+ */
 public final class GameHeader {
     private Text score;
     private Text nameA, nameB;
@@ -19,6 +23,11 @@ public final class GameHeader {
     private Button pause;
     private LinkedList<String> scoresList;
 
+    /*
+     * Construct a new instance of GameHeader
+     * 
+     * @param
+     */
     public GameHeader(LinkedList<DecisionMaker> playerList) {
         nbPlayer = (playerList.size() == 2) ? 2 : 1;
         attributes = new LinkedList<>();
@@ -74,8 +83,9 @@ public final class GameHeader {
         nav.setMinWidth(Menu.winWidth);
         if (nbPlayer == 1) {
             nav.setHgap(150);
-        } else nav.setHgap(100);
-            nav.setVgap(20);
+        } else
+            nav.setHgap(100);
+        nav.setVgap(20);
         nav.add(pause, 0, 0);
 
         for (int i = 0; i < attributes.size(); i++) {
