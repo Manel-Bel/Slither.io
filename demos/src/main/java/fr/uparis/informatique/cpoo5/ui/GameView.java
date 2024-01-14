@@ -33,7 +33,7 @@ public class GameView {
     int  scoreMAx;
     String NomGAgnant ;
     BorderPane content;
-    Hyperlink pause ;
+    Hyperlink exit ;
 
     public GameView(Stage stage, double scale, boolean solo, boolean ia,Scene menu) {
         this.scale = scale;
@@ -56,14 +56,14 @@ public class GameView {
         this.content.setTop(scores);
         content.setPrefWidth(1000);
         content.setPrefHeight(900);
-        pause=new Hyperlink("PAuse");
+        exit=new Hyperlink("exit");
        
-         pause.setOnAction(e->{
+        exit.setOnAction(e->{
             timer.stop();
-            new Pause(gameStage, menu, scale, ia, solo,timer);
+           stage.setScene(menu);
         });
-        
-        content.setLeft(pause);
+
+        // content.setLeft(exit);
       
  
 
@@ -73,10 +73,12 @@ public class GameView {
         updateScore();
 
         gamScene = new Scene(this.content);
+        
         // set the keys for the scene
         setKeysScene();
+         animate();
 
-        animate();
+       
         gameStage.setScene(gamScene);
     }
 
