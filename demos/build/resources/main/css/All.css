@@ -45,3 +45,10 @@
 	-fx-text-transfrom: uppercase;
     -fx-text-fill: #B8A508;
 }
+
+#PauseTitle{
+	-fx-font-size: 50;
+	-fx-font-family: ARCADECLASSIC;
+	-fx-text-transfrom: uppercase;
+    -fx-text-fill: #B8A508;
+}

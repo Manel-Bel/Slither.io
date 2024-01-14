@@ -33,12 +33,14 @@ public class GameView {
     private boolean solo, ia;
     private GameHeader gameHeader;
     private PauseWin pauseWin;
+    private Scene privScene;
 
     public GameView(Stage stage, double scale, boolean solo, boolean ia) {
         this.scale = scale;
         this.solo = solo;
         this.ia = ia;
         this.gameStage = stage;
+        privScene = stage.getScene();
         gameStage.setTitle("CPOO5 - Slither - Game");
 
         this.gameRoot = new Pane();
@@ -66,7 +68,10 @@ public class GameView {
     }
 
     private void animate() {
-        timer = new Animation();
+        root.requestFocus();
+        if (timer == null) {
+            timer = new Animation();
+        }
         timer.start();
     }
 
@@ -143,6 +148,7 @@ public class GameView {
             gameRoot.getChildren().add(game.generateFood());
         }
         // move all the snakes
+        int n = 0;
         for (DataPlayer data : game.getDataPlayer()) {
             data.player.moveSnake(game.getCoordFood(), data.occupiedCells.getFirst());
             game.updateCell(data);
@@ -155,9 +161,11 @@ public class GameView {
                 System.out.println("check coll with food gameView");
                 gameRoot.getChildren().remove(game.getFood().getFood());
                 game.eatFood(data);
+                gameHeader.updateScore(n, data.player.getScore());
                 Snake s = data.player.getSnake();
                 gameRoot.getChildren().add(s.getBody().get(s.getBody().size() - 1));
             }
+            n++;
         }
         return false;
     }
@@ -198,17 +206,20 @@ public class GameView {
             this.root.setMinHeight(250);
             this.root.setAlignment(Pos.CENTER);
             Label titre = new Label("Pause");
-            titre.setId("titrelabel");
+            titre.setId("PauseTitle");
+
             resumeBtn = new Button("Resume the game");
+            resumeBtn.setMaxSize(100, 100);
             quitBtn = new Button("Quit");
-            quitBtn.setMaxSize(170, 170);
-            handleBtn();
+            quitBtn.setMaxSize(100, 100);
 
             this.root.getChildren().addAll(titre, resumeBtn, quitBtn);
-
+            pauseSc = new Scene(root);
             pauseSc.getStylesheets().add(getClass().getResource("/css/All.css").toExternalForm());
 
             this.pauseStage = new Stage();
+            handleBtn();
+
             pauseStage.setTitle("Pause");
             pauseStage.setScene(pauseSc);
             pauseStage.setResizable(false);
@@ -228,11 +239,18 @@ public class GameView {
             });
             quitBtn.setOnAction(e -> new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent event) {
-                    if (event.getSource() == quitBtn) {
-                        PauseWin.this.pauseStage.close();
-                        GameView.this.timer.stop();
-
-                    }
+                    PauseWin.this.pauseStage.close();
+                    System.out.println("quit game");
+                    GameView.this.timer.stop();
+                    GameView.this.gameStage.setScene(privScene);
+                }
+            });
+            resumeBtn.setOnAction(e -> new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent event) {
+                    gameHeader.getPauseBtn().setDisable(false);
+                    PauseWin.this.pauseStage.close();
+                    System.out.println("ressume btn ");
+                    GameView.this.animate();
                 }
             });
 

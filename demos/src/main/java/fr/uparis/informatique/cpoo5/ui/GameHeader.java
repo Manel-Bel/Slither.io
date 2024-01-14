@@ -1,11 +1,10 @@
 package fr.uparis.informatique.cpoo5.ui;
 
-import java.time.format.TextStyle;
 import java.util.LinkedList;
+import java.util.StringJoiner;
 
 import fr.uparis.informatique.cpoo5.game.DecisionMaker;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -18,39 +17,48 @@ public final class GameHeader {
     private LinkedList<Text> attributes;
     private GridPane nav;
     private Button pause;
+    private LinkedList<String> scoresList;
 
     public GameHeader(LinkedList<DecisionMaker> playerList) {
         nbPlayer = (playerList.size() == 2) ? 2 : 1;
         attributes = new LinkedList<>();
+        scoresList = new LinkedList<>();
         this.nameA = new Text(playerList.get(0).getName());
         attributes.add(nameA);
+        initScoresString();
         score = new Text();
+        buildScoreText();
         attributes.add(score);
 
-        if (nbPlayer == 1) {
-            score.setText("000");
-        } else {
-            score.setText("000:000");
-            this.nameB = new Text(playerList.get(2).getName());
+        if (nbPlayer == 2) {
+            this.nameB = new Text(playerList.get(1).getName());
             attributes.add(nameB);
         }
         pause = new Button();
         pause.setText("Pause");
-        pause.setStyle("-fx-font: 20 ARCADECLASSIC");
-        pause.setStyle("-fx-background-color: black");
+        pause.setStyle("-fx-font: 30 ARCADECLASSIC");
+        pause.setStyle("-fx-background-color: white");
+        pause.setCursor(Cursor.HAND);
         setStyle();
         addElementToNav();
-
     }
 
-    public void updateScore(int scoreA, int scoreB) {
-        String a = String.format("%03d", scoreA);
-        if (nbPlayer == 2) {
-            String b = String.format("%03d", scoreB);
-            score.setText(a + " : " + b);
-        } else {
-            score.setText(a);
+    private void initScoresString() {
+        for (int i = 0; i < nbPlayer; i++) {
+            scoresList.add("000");
         }
+    }
+
+    private void buildScoreText() {
+        StringJoiner j = new StringJoiner(":");
+        scoresList.forEach(j::add);
+        score.setText(j.toString());
+    }
+
+    public void updateScore(int playernumber, int score) {
+        String a = String.format("%03d", score);
+        scoresList.set(playernumber, a);
+        buildScoreText();
     }
 
     private void setStyle() {
@@ -62,14 +70,16 @@ public final class GameHeader {
 
     private void addElementToNav() {
         nav = new GridPane();
-        nav.setStyle("-fx-background-color: white");
         nav.setMinHeight(70);
         nav.setMinWidth(Menu.winWidth);
-        nav.setHgap(10);
+        if (nbPlayer == 1) {
+            nav.setHgap(150);
+        } else nav.setHgap(100);
+            nav.setVgap(20);
         nav.add(pause, 0, 0);
 
         for (int i = 0; i < attributes.size(); i++) {
-            nav.add(attributes.get(i), i + 1, 0);
+            nav.add(attributes.get(i), i + 2, 0);
         }
         nav.setStyle("-fx-background-color: black");
     }
