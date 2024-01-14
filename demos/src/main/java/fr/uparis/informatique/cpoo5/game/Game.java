@@ -249,4 +249,22 @@ public class Game {
             this.occupiedCells = new LinkedList<>();
         }
     }
+
+    public void resetScore() {
+        for (DataPlayer d : dataPlayers) {
+            d.player.setScore(0);
+        }
+    }
+
+    public void reset() {
+        // reset the grid
+        //initGrid();
+        // reset the players
+        dataPlayers.clear();
+        initPlayers();
+        // reset the food
+        food = null;
+        occupiedByFoodCell = null;
+        endOfGame = false;
+    }
 }

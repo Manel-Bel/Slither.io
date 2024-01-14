@@ -13,8 +13,9 @@ public final class Snake {
     private double snakeHeight = 20;
     private Direction direction;
     private ArrayList<Rectangle> body;
-    private double speedX = 10;
-    private double speedY = 10;
+    private double speed = 20;
+    
+    private double angle = 90;
     private Color color;
 
     public Snake(double x, double y) {
@@ -24,14 +25,21 @@ public final class Snake {
         this.snakeRec = new Rectangle(this.snakeX, this.snakeY, this.snakeWidth, this.snakeHeight);
         this.body = new ArrayList<>();
         this.body.add(snakeRec);
-        this.direction = null;
+        this.direction = Direction.UP;
         this.color = Color.GREEN;
         snakeRec.setFill(color);
     }
     public Rectangle getSnack(){
         return this.snakeRec;
     }
-
+    public double getangle(){
+        return this.angle;
+    }
+    public void setAngle(Double d){
+        if ( d >=0 && d<360){
+            this.angle=d;
+        }
+    }
     // set the color
     public void setColor(Color c) {
         this.color = c;
@@ -66,87 +74,127 @@ public final class Snake {
     }
 
     // to move the snake
-     public void move(double dlt,double width,double height) {
+    //  public void move(double dlt,double width,double height) {
     
-        if (this.direction == null) {
-            return;
-        }
+    //     if (this.direction == null) {
+    //         return;
+    //     }
     
-        double nextSnakeX=0;
-        double nextSnakeY=0;
+    //     double nextSnakeX=0;
+    //     double nextSnakeY=0;
     
-        // Gestion des rebonds sur les bords de l'écran
+    //     // Gestion des rebonds sur les bords de l'écran
        
     
-        // Déplacement en fonction de la direction
-        switch (direction) {
-            case UP:
-                nextSnakeY = this.snakeRec.getY() - dlt * speedY;
-                nextSnakeX=this.snakeRec.getX() ;
-                break;
-            case DOWN:
-                nextSnakeY = this.snakeRec.getY() + dlt * speedY;
-                nextSnakeX=this.snakeRec.getX() ;
-                break;
-            case LEFT:
-                nextSnakeX = this.snakeRec.getX() - dlt * speedX;
-                nextSnakeY=this.snakeRec.getY() ;
-                break;
-            case RIGHT:
-                nextSnakeX = this.snakeRec.getX() + dlt * speedX;
-                nextSnakeY=this.snakeRec.getY() ;
+    //     // Déplacement en fonction de la direction
+    //     switch (direction) {
+    //         case UP:
+    //             nextSnakeY = this.snakeRec.getY() - dlt * speedY;
+    //             nextSnakeX=this.snakeRec.getX() ;
+    //             break;
+    //         case DOWN:
+    //             nextSnakeY = this.snakeRec.getY() + dlt * speedY;
+    //             nextSnakeX=this.snakeRec.getX() ;
+    //             break;
+    //         case LEFT:
+    //             nextSnakeX = this.snakeRec.getX() - dlt * speedX;
+    //             nextSnakeY=this.snakeRec.getY() ;
+    //             break;
+    //         case RIGHT:
+    //             nextSnakeX = this.snakeRec.getX() + dlt * speedX;
+    //             nextSnakeY=this.snakeRec.getY() ;
                 
-                break;
-            case UP_LEFT:
-                nextSnakeX = this.snakeRec.getX() - dlt * speedX;
-                nextSnakeY=this.snakeRec.getY() - dlt * speedY;
-                break;
-            case DOWN_LEFT:
-                nextSnakeX = this.snakeRec.getX() - dlt * speedX;
-                nextSnakeY=this.snakeRec.getY() + dlt * speedY;
-                break;
-            case DOWN_RIGHT:
-                nextSnakeX = this.snakeRec.getX() + dlt * speedX;
-                nextSnakeY=this.snakeRec.getY() + dlt * speedY;
-                break;
+    //             break;
+    //         case UP_LEFT:
+    //             nextSnakeX = this.snakeRec.getX() - dlt * speedX;
+    //             nextSnakeY=this.snakeRec.getY() - dlt * speedY;
+    //             break;
+    //         case DOWN_LEFT:
+    //             nextSnakeX = this.snakeRec.getX() - dlt * speedX;
+    //             nextSnakeY=this.snakeRec.getY() + dlt * speedY;
+    //             break;
+    //         case DOWN_RIGHT:
+    //             nextSnakeX = this.snakeRec.getX() + dlt * speedX;
+    //             nextSnakeY=this.snakeRec.getY() + dlt * speedY;
+    //             break;
             
             
-            default:
-                System.out.println("Invalid direction");
-                return;
-        }
+    //         default:
+    //             System.out.println("Invalid direction");
+    //             return;
+    //     }
     
-        // Gestion du rebond sur les bords de l'écran après déplacement
-        if (nextSnakeY < 0) {
-            nextSnakeY = height - snakeHeight;
-        } else if (nextSnakeY > height - snakeHeight) {
-            nextSnakeY = 0;
-        }
+    //     // Gestion du rebond sur les bords de l'écran après déplacement
+    //     if (nextSnakeY < 0) {
+    //         nextSnakeY = height - snakeHeight;
+    //     } else if (nextSnakeY > height - snakeHeight) {
+    //         nextSnakeY = 0;
+    //     }
     
-        if (nextSnakeX < 0) {
-            nextSnakeX = width - snakeWidth;
-        } else if (nextSnakeX > width - snakeWidth) {
-            nextSnakeX = 0;
-        }
+    //     if (nextSnakeX < 0) {
+    //         nextSnakeX = width - snakeWidth;
+    //     } else if (nextSnakeX > width - snakeWidth) {
+    //         nextSnakeX = 0;
+    //     }
 
-        for (int i = body.size() - 1; i > 0; i--) {
-            // get the priview
-            Rectangle temp = body.get(i - 1);
-            // update the position of i
-            body.get(i).setX(temp.getX());
-            body.get(i).setY(temp.getY());
+       
+    //     if(body.size()>1){
+    //             Rectangle r=body.remove(body.size()-1);
+    //             r.setX(this.snakeX);
+    //             r.setY(this.snakeY);
+    //             body.add(1,r);
+    //     }
+           
 
-        }
+        
     
-        this.snakeRec.setX(nextSnakeX);
-        this.snakeRec.setY(nextSnakeY);
-        this.snakeX=nextSnakeX;
-        this.snakeY=nextSnakeY;
+    //     this.snakeRec.setX(nextSnakeX);
+    //     this.snakeRec.setY(nextSnakeY);
+    //     this.snakeX=nextSnakeX;
+    //     this.snakeY=nextSnakeY;
     
     
         
-     }
+    //  }
 
+    //  public void moveByAngle(double dlt, double width, double height){
+
+    //     double angleRad = Math.toRadians(angle);
+
+    //     double delta = dlt * speedY;
+    //     // Calculate the new positions
+    //     double deltaX = delta * Math.cos(angleRad);
+    //     double deltaY = delta * Math.sin(angleRad);
+
+    //     // Update the positions
+    //     double newX = snakeX + deltaX;
+    //     double newY = snakeY + deltaY;
+
+    //     if(body.size()>1){
+    //         Rectangle r=body.remove(body.size()-1);
+    //         r.setX(this.snakeX);
+    //         r.setY(this.snakeY);
+    //         body.add(1,r);
+    //     }
+    //      if(newX>width ){
+    //         newX=0;
+    //      }
+    //         if(newY>height){
+    //             newY=0;
+    //         }
+    //         if(newX<0){
+    //             newX=width;
+    //         }
+    //         if(newY<0){
+    //             newY=height;
+    //         }
+    //     this.snakeRec.setX(newX);
+    //     this.snakeRec.setY(newX);
+    //     this.snakeX=newX;
+    //     this.snakeY=newY;
+       
+
+    //  }
     // check the colision
     public boolean checkCollision(double winWidth, double winHeight) {
         for (Rectangle r : body) {
@@ -158,7 +206,7 @@ public final class Snake {
         // the snake is in the frame
         return false;
     }
-
+   
     // extend the length of the snake
     public void extendBody() {
         Rectangle r = new Rectangle(snakeWidth, snakeHeight);
@@ -199,7 +247,7 @@ public final class Snake {
     }
     // to change the speed
     public void changeSpeed(double  s) {
-        speedX += s;
+        speed += s;
     }
 
     // ovoride the methode tostring
@@ -215,52 +263,52 @@ public final class Snake {
         return body.size()*20;
     }
 
-    //  public void move() {
-    //     if (this.direction == null) {
-    //         return;
-    //     }
-    //     switch (direction) {
-    //         case UP:
-    //             snakeY -= speed;
-    //             if (snakeY < 0) {
-    //                 snakeY = Menu.winHeight - snakeHeight;
-    //             }
-    //             break;
-    //         case DOWN:
-    //             snakeY += speed;
-    //             if (snakeY > Menu.winHeight - snakeHeight) {
-    //                 snakeY = 0;
-    //             }
-    //             break;
-    //         case LEFT:
-    //             snakeX -= speed;
-    //             if (snakeX < 0) {
-    //                 snakeX = Menu.winWidth - snakeWidth;
-    //             }
-    //             break;
-    //         case RIGHT:
-    //             snakeX += speed;
-    //             if (snakeX > Menu.winWidth - snakeWidth) {
-    //                 snakeX = 0;
-    //             }
-    //             break;
-    //         default:
-    //             System.out.println("Invalid direction");
-    //             return;
-    //     }
-    //     // move the body
-    //     for (int i = body.size() - 1; i > 0; i--) {
-    //         // get the priview
-    //         Rectangle temp = body.get(i - 1);
-    //         // update the position of i
-    //         body.get(i).setX(temp.getX());
-    //         body.get(i).setY(temp.getY());
+     public void move() {
+        if (this.direction == null) {
+            return;
+        }
+        switch (direction) {
+            case UP:
+                snakeY -= speed;
+                if (snakeY < 0) {
+                    snakeY = Menu.winHeight - snakeHeight;
+                }
+                break;
+            case DOWN:
+                snakeY += speed;
+                if (snakeY > Menu.winHeight - snakeHeight) {
+                    snakeY = 0;
+                }
+                break;
+            case LEFT:
+                snakeX -= speed;
+                if (snakeX < 0) {
+                    snakeX = Menu.winWidth - snakeWidth;
+                }
+                break;
+            case RIGHT:
+                snakeX += speed;
+                if (snakeX > Menu.winWidth - snakeWidth) {
+                    snakeX = 0;
+                }
+                break;
+            default:
+                System.out.println("Invalid direction");
+                return;
+        }
+        // move the body
+        for (int i = body.size() - 1; i > 0; i--) {
+            // get the priview
+            Rectangle temp = body.get(i - 1);
+            // update the position of i
+            body.get(i).setX(temp.getX());
+            body.get(i).setY(temp.getY());
 
-    //     }
-    //     // update the position of the head
-    //     snakeRec.setX(snakeX);
-    //     snakeRec.setY(snakeY);
-    // }
+        }
+        // update the position of the head
+        snakeRec.setX(snakeX);
+        snakeRec.setY(snakeY);
+    }
 
 
 }

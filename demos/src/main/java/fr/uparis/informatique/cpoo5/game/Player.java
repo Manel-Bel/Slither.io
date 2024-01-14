@@ -33,7 +33,8 @@ public final class Player implements DecisionMaker {
     @Override
     public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS,double width,double height) {
         // move the snake directly
-        snake.move(1,width,height);
+        snake.moveByAngle(1,width,height);
+        //snake.move(1,width,height);
     }
 
 }
