@@ -17,6 +17,10 @@ public class Game {
     private LinkedList<DataPlayer> dataPlayers;
     private boolean solo, ia;
 
+    public Game() {
+
+    }
+
     public Game(boolean solo, boolean ia) {
         this.solo = solo;
         this.ia = ia;

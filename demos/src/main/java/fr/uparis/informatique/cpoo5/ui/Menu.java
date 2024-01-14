@@ -7,6 +7,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
+/**
+ * The Menu class represents the main menu of the game.
+ * It provides options for starting different game modes, accessing multiplayer,
+ * and exiting the game.
+ * 
+ * @author : Belguenbour Manel
+ */
+
 public class Menu {
     private Stage stage;
     private Scene scene;
@@ -15,7 +23,12 @@ public class Menu {
     public static final int winWidth = 1000;
     public static final int winHeight = 700;
 
-    // the menu of the game
+    /**
+     * Constructs a new instance of the `Menu` class.
+     *
+     * @param stage The primary stage of the application.
+     * @param scale The scale factor for the menu.
+     */
     public Menu(Stage stage, double scale) {
         this.stage = stage;
         title = new Label("Menu");
@@ -49,6 +62,11 @@ public class Menu {
         stage.centerOnScreen();
     }
 
+    /**
+     * Gets the scene associated with the menu.
+     *
+     * @return The scene of the menu.
+     */
     public Scene getScene() {
         return scene;
     }

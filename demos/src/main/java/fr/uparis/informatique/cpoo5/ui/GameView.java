@@ -38,16 +38,16 @@ public class GameView {
     private PauseWin pauseWin;
     private Scene privScene;
 
-    /*
-     * Constructs a new instance of the `GameView` class.
+    /**
+     * Constructs a new instance of the GameView class
      * 
-     * @param stage The primary stage of the application.
+     * @param stage The primary stage of the application
      * 
-     * @param scale The scale factor for the game view.
+     * @param scale The scale factor for the game view
      * 
-     * @param solo Indicates whether the game is played in solo mode
+     * @param solo  Indicates whether the game is played in solo mode
      * 
-     * @param ia Indicates whether the game includes artificial intelligence
+     * @param ia    Indicates whether the game includes artificial intelligence
      */
     public GameView(Stage stage, double scale, boolean solo, boolean ia) {
         this.scale = scale;
@@ -94,7 +94,11 @@ public class GameView {
         timer.start();
     }
 
-    // add the grid
+    /**
+     * creat the animation timer for the game
+     * 
+     * @author : Belguenbour Manel
+     */
     private void addGridToScreen() {
         for (int i = 0; i < game.getNrows(); i++) {
             for (int j = 0; j < game.getNcols(); j++) {
@@ -103,7 +107,11 @@ public class GameView {
         }
     }
 
-    // add the snakes to th screen
+    /**
+     * add the instance of the snakes in the game root
+     * 
+     * @author : Belguenbour Manel
+     */
     private void addSnakesToTheScreen() {
         LinkedList<DecisionMaker> p = new LinkedList<>();
         for (DataPlayer data : game.getDataPlayer()) {
@@ -113,7 +121,11 @@ public class GameView {
         gameHeader = new GameHeader(p);
     }
 
-    // set the keys for the scene
+    /**
+     * Set the keys to detect the movement of the snake
+     * 
+     * @author : Belguenbour Manel
+     */
     private void setKeysScene() {
         gamScene.setOnKeyPressed(e -> {
             var keyCode = e.getCode();
@@ -144,6 +156,11 @@ public class GameView {
         });
     }
 
+    /**
+     * handle the event of the pause button
+     * 
+     * @author : Belguenbour Manel
+     */
     private void setKeyPause() {
         gameHeader.getPauseBtn().setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -162,6 +179,12 @@ public class GameView {
 
     /**
      * update the loop of the game
+     * it iterate throw all the players
+     * and moves them
+     * if it detect a collision withitself it means the end of the game
+     * we quit the loop
+     * else we check if the snake collided with the food
+     * it eats it and update the score
      * 
      * @author : Belguenbour Manel
      */
@@ -193,7 +216,7 @@ public class GameView {
         return false;
     }
 
-    /*
+    /**
      * The Animation class represents the animation timer for the game
      * 
      * @author : Belguenbour Manel
@@ -220,7 +243,7 @@ public class GameView {
         }
     }
 
-    /*
+    /**
      * The PauseWin class represents the pause window in the game.
      * 
      * @author : Belguenbour Manel
@@ -265,7 +288,7 @@ public class GameView {
 
         }
 
-        /*
+        /**
          * handle the event keys for the buttons
          * 
          * @author : Belguenbour Manel

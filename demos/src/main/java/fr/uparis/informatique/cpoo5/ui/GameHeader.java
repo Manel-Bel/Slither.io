@@ -10,11 +10,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-/*
- * GameHeader : The header of the game includes details like the names 
+/**
+ * GameHeader : The header of the game includes details like the names
  * of the players and their scores.
+ * 
+ * @author : Belguenbour Manel
  */
-public final class GameHeader {
+public class GameHeader {
     private Text score;
     private Text nameA, nameB;
     private int nbPlayer;
@@ -23,10 +25,11 @@ public final class GameHeader {
     private Button pause;
     private LinkedList<String> scoresList;
 
-    /*
+    /**
      * Construct a new instance of GameHeader
      * 
-     * @param
+     * @param playerList The list of all the Players.
+     * 
      */
     public GameHeader(LinkedList<DecisionMaker> playerList) {
         nbPlayer = (playerList.size() == 2) ? 2 : 1;
@@ -52,18 +55,33 @@ public final class GameHeader {
         addElementToNav();
     }
 
-    private void initScoresString() {
+    /**
+     * initialise the score string with 000 * the number of players
+     * 
+     */
+    public void initScoresString() {
         for (int i = 0; i < nbPlayer; i++) {
             scoresList.add("000");
         }
     }
 
-    private void buildScoreText() {
+    /**
+     * build a string from a table , separated with ':'
+     * 
+     */
+    public void buildScoreText() {
         StringJoiner j = new StringJoiner(":");
         scoresList.forEach(j::add);
         score.setText(j.toString());
     }
 
+    /**
+     * update the score text
+     * 
+     * @param playernumber indicate the number of the player in our list
+     * @param score        the new score of the player indicated previously
+     * 
+     */
     public void updateScore(int playernumber, int score) {
         String a = String.format("%03d", score);
         scoresList.set(playernumber, a);
@@ -94,10 +112,20 @@ public final class GameHeader {
         nav.setStyle("-fx-background-color: black");
     }
 
+    /**
+     * getter
+     * 
+     * @return the pause button
+     */
     public Button getPauseBtn() {
         return pause;
     }
 
+    /**
+     * getter of the pane that represent the header of the game
+     * 
+     * @return nav
+     */
     public GridPane getNavBar() {
         return nav;
     }
