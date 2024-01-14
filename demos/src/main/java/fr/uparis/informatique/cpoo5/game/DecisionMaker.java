@@ -10,6 +10,7 @@ public interface DecisionMaker {
     public int getScore();
 
     public Snake getSnake();
+    public String getNom();
 
     public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS);
 

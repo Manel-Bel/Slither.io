@@ -137,7 +137,7 @@ public class Game {
             for (int j = i + 1; j < data.occupiedCells.size(); j++) {
                 if (data.occupiedCells.get(i).row == data.occupiedCells.get(j).row
                         && data.occupiedCells.get(i).col == data.occupiedCells.get(j).col) {
-                    System.out.println("Auto collision!");
+                    //System.out.println("Auto collision!");
                     return true;
                 }
             }
@@ -200,5 +200,23 @@ public class Game {
             this.player = p;
             this.occupiedCells = new LinkedList<>();
         }
+    }
+
+    public boolean anotherCollision(DataPlayer data) {
+        for(DataPlayer p : dataPlayers){
+            
+            
+                for (int j = 0 ; j < p.occupiedCells.size(); j++) {
+                    if (data.occupiedCells.get(0).row == p.occupiedCells.get(j).row
+                            && data.occupiedCells.get(0).col == p.occupiedCells.get(j).col && data!=p) {
+                        //System.out.println("Auto collision!");
+                        return true;
+                    }
+                }
+        }
+        
+      
+    
+      return false;
     }
 }

@@ -35,5 +35,8 @@ public final class Player implements DecisionMaker {
         // move the snake directly
         snake.move();
     }
+    public String getNom(){
+        return this.name;
+    }
 
 }

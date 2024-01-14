@@ -62,4 +62,9 @@ public class IA implements DecisionMaker {
         }
     }
 
+    @Override
+    public String getNom() {
+      return "IA";
+    }
+
 }

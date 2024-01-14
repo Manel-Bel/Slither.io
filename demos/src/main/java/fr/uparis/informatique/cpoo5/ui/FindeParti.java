@@ -17,7 +17,7 @@ public class FindeParti  {
     public static final int winHeight = 600;
 
     // the menu of the game
-    public FindeParti(Stage stage,Scene menus, double scale ,boolean ia,boolean solo) {
+    public FindeParti(Stage stage,Scene menus, double scale ,boolean ia,boolean solo , int scoreMAX , String nom) {
      
         title = new Label("FIN DE PARTI");
         
@@ -27,7 +27,8 @@ public class FindeParti  {
         root.setAlignment(Pos.TOP_CENTER);
 
         // btn
-        Text Score = new Text(" SCORE");
+        Text Score = new Text(" SCORE MAX : "+scoreMAX);
+        Text Nom = new Text(nom + " a gagné ");
 
         Button menu = new Button("Menu");
         Button Replay = new Button("Replay");
@@ -39,7 +40,7 @@ public class FindeParti  {
         Replay.setOnAction(e -> new GameView(stage, scale, solo, ia,menus));
 
 
-        root.getChildren().addAll(title, Score, menu, Replay);
+        root.getChildren().addAll(title, Score, Nom, menu, Replay);
 
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/All.css").toExternalForm());

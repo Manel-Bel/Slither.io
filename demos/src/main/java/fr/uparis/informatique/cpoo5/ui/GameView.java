@@ -20,6 +20,8 @@ public class GameView {
     private Game game;
     private boolean solo, ia;
     Scene menu;
+    int  scoreMAx;
+    String NomGAgnant ;
 
     public GameView(Stage stage, double scale, boolean solo, boolean ia,Scene menu) {
         this.scale = scale;
@@ -95,10 +97,24 @@ public class GameView {
                         .setDirection(Direction.getDirection(e.getCode()));
         });
     }
+   
 
     public static Object launchSolitaire() {
         return null;
     }
+    public void MaxScore(){
+        int max=0;
+       String s="";
+        for (DataPlayer data : game.getDataPlayer()) {
+            if(data.player.getScore()>max){
+                max=data.player.getScore();
+                s=data.player.getNom();
+            }
+        }
+        scoreMAx=max;
+        NomGAgnant=s;
+    }
+ 
 
     public static Object launchNetworked() {
         return null;
@@ -117,12 +133,21 @@ public class GameView {
             game.updateCell(data);
             // check collision
             if (game.isAutoCollision(data)) {
+                //System.out.println("auto");
                 timer.stop();
-                new FindeParti(gameStage, menu, scale, ia, solo);
+                
+                new FindeParti(gameStage, menu, scale, ia, solo,scoreMAx,NomGAgnant);
+                return true;
+            }
+            if(game.anotherCollision(data)){
+                //System.out.println("another");
+                timer.stop();
+                MaxScore();
+                new FindeParti(gameStage, menu, scale, ia, solo,scoreMAx,NomGAgnant);
                 return true;
             }
             if (game.checkCollisionWithFood(data)) {
-                System.out.println("check coll with food gameView");
+               // System.out.println("check coll with food gameView");
                 gameRoot.getChildren().remove(game.getFood().getFood());
                 game.eatFood(data);
                 Snake s = data.player.getSnake();
@@ -147,7 +172,7 @@ public class GameView {
             // double deltaT = (now - last) / 1e9;
             if (now - last >= waitInterval) {
                 if (update()) { // game ended
-                    System.out.println("collision animation ends...");
+                   // System.out.println("collision animation ends...");
                     stop();
                 }
                 last = now;

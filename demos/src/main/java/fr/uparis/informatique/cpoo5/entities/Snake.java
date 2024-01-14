@@ -165,4 +165,13 @@ public final class Snake {
         return "Head is at [posX= " + snakeRec.getX() + ", posY=" + snakeRec.getY() + "]";
     }
 
+    public int getSnackY() {
+        return this.snakeY;
+        
+    }
+
+    public int getSnackX() {
+        return this.snakeX;
+    }
+
 }
