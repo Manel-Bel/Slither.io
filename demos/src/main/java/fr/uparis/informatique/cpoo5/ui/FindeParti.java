@@ -5,43 +5,51 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class TwoPlayer {
-    private Stage stage;
+public class FindeParti  {
+    
     private Scene scene;
     private VBox root;
     private Label title;
     public static final int winWidth = 1000;
     public static final int winHeight = 600;
 
-    public TwoPlayer(Stage stage, double scale,Scene menu) {
-        this.stage = stage;
-        title = new Label("Choice");
-        title.setId("Title");
+    // the menu of the game
+    public FindeParti(Stage stage,Scene menus, double scale ,boolean ia,boolean solo) {
+     
+        title = new Label("FIN DE PARTI");
+        
         root = new VBox(10);
         root.setMinWidth(winWidth * scale);
         root.setMinHeight(winHeight * scale);
         root.setAlignment(Pos.TOP_CENTER);
 
         // btn
-        Button ia = new Button("Palyer vs IA");
-        Button twoPlayer = new Button("2 Players");
-        Button exitBtn = new Button("Return");
+        Text Score = new Text(" SCORE");
 
-        ia.setOnAction(e -> new GameView(stage, scale, false, true,menu));
-        twoPlayer.setOnAction(e -> new GameView(stage, scale, false, false,menu)); // nb player
-        exitBtn.setOnAction(e -> new Menu(stage, scale));
+        Button menu = new Button("Menu");
+        Button Replay = new Button("Replay");
+        
 
-        root.getChildren().addAll(title, ia, twoPlayer, exitBtn);
+        
+        menu.setOnAction(e -> stage.setScene(menus));
+
+        Replay.setOnAction(e -> new GameView(stage, scale, solo, ia,menus));
+
+
+        root.getChildren().addAll(title, Score, menu, Replay);
 
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/All.css").toExternalForm());
-        this.stage.setScene(scene);
+        stage.setScene(scene);
     }
 
     public Scene getScene() {
         return scene;
     }
-
 }
+
+    
+

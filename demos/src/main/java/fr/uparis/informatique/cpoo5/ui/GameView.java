@@ -11,6 +11,7 @@ import fr.uparis.informatique.cpoo5.game.Game.DataPlayer;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public class GameView {
+
     private Stage gameStage;
     private Scene gamScene;
     private Pane gameRoot;
@@ -18,11 +19,13 @@ public class GameView {
     private Animation timer;
     private Game game;
     private boolean solo, ia;
+    Scene menu;
 
-    public GameView(Stage stage, double scale, boolean solo, boolean ia) {
+    public GameView(Stage stage, double scale, boolean solo, boolean ia,Scene menu) {
         this.scale = scale;
         this.solo = solo;
         this.ia = ia;
+        this.menu=menu;
         this.gameStage = stage;
         gameStage.setTitle("CPOO5 - Slither - Game");
 
@@ -101,10 +104,11 @@ public class GameView {
         return null;
     }
 
+
     // return true if the game ended
     private boolean update() {
         if (game.getFood() == null) {
-            System.out.println("gameview generation of food");
+            //System.out.println("gameview generation of food");
             gameRoot.getChildren().add(game.generateFood());
         }
         // move all the snakes
@@ -113,7 +117,8 @@ public class GameView {
             game.updateCell(data);
             // check collision
             if (game.isAutoCollision(data)) {
-                // endOfGame = true;
+                timer.stop();
+                new FindeParti(gameStage, menu, scale, ia, solo);
                 return true;
             }
             if (game.checkCollisionWithFood(data)) {
