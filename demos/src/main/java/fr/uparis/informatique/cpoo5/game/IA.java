@@ -5,10 +5,7 @@ import fr.uparis.informatique.cpoo5.utils.Coordinate;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 import javafx.scene.paint.Color;
 
-public class IA implements DecisionMaker {
-    private final String name;
-    private int score = 0;
-    private Snake snake;
+public class IA extends DecisionMaker {
 
     public IA(int x, int y) {
         name = "Bot";
@@ -16,21 +13,6 @@ public class IA implements DecisionMaker {
         // set default direction to the snake
         snake.setDirection(Direction.RIGHT);
         snake.setColor(Color.RED);
-    }
-
-    @Override
-    public void setScore(int p) {
-        this.score += p;
-    }
-
-    @Override
-    public int getScore() {
-        return this.score;
-    }
-
-    @Override
-    public Snake getSnake() {
-        return this.snake;
     }
 
     @Override

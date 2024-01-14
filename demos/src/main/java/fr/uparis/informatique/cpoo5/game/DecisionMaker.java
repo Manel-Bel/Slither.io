@@ -3,15 +3,24 @@ package fr.uparis.informatique.cpoo5.game;
 import fr.uparis.informatique.cpoo5.entities.Snake;
 import fr.uparis.informatique.cpoo5.utils.Coordinate;
 
-public interface DecisionMaker {
+public abstract class DecisionMaker {
+    String name;
+    int score = 0;
+    Snake snake;
 
-    public void setScore(int p);
+    public void setScore(int p) {
+        score += p;
+    }
 
-    public int getScore();
+    public int getScore() {
+        return score;
+    }
 
-    public Snake getSnake();
+    public Snake getSnake() {
+        return snake;
+    }
 
-    public void moveSnake(Coordinate coordinateFood, Coordinate coordinateS);
+    public abstract void moveSnake(Coordinate coordinateFood, Coordinate coordinateS);
 
     // public void setDirectionSnake(KeyCode e, Coordinate coordinateFood,
     // Coordinate coordinateS);
