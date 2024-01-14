@@ -1,8 +1,14 @@
 package fr.uparis.informatique.cpoo5.ui;
 
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import fr.uparis.informatique.cpoo5.entities.Snake;
 import fr.uparis.informatique.cpoo5.game.Game;
@@ -12,6 +18,10 @@ import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public class GameView {
 
+   
+
+    
+    private Text scores;
     private Stage gameStage;
     private Scene gamScene;
     private Pane gameRoot;
@@ -22,24 +32,46 @@ public class GameView {
     Scene menu;
     int  scoreMAx;
     String NomGAgnant ;
+    BorderPane content;
+    Hyperlink pause ;
 
     public GameView(Stage stage, double scale, boolean solo, boolean ia,Scene menu) {
         this.scale = scale;
         this.solo = solo;
+        this.scores=new Text();
         this.ia = ia;
         this.menu=menu;
         this.gameStage = stage;
+        
+
         gameStage.setTitle("CPOO5 - Slither - Game");
+        
 
         this.gameRoot = new Pane();
         gameRoot.setPrefWidth(Menu.winWidth * this.scale);
         gameRoot.setPrefHeight(Menu.winHeight * this.scale);
+        gameRoot.setLayoutX(100);
+        gameRoot.setLayoutY(100);
+        this.content=new BorderPane(gameRoot);
+        this.content.setTop(scores);
+        content.setPrefWidth(1000);
+        content.setPrefHeight(900);
+        pause=new Hyperlink("PAuse");
+       
+         pause.setOnAction(e->{
+            timer.stop();
+            new Pause(gameStage, menu, scale, ia, solo,timer);
+        });
+        content.setLeft(pause);
+      
+ 
 
         this.game = new Game(solo, ia);
         addGridToScreen();
         addSnakesToTheScreen();
+        updateScore();
 
-        gamScene = new Scene(gameRoot);
+        gamScene = new Scene(this.content);
         // set the keys for the scene
         setKeysScene();
 
@@ -115,7 +147,13 @@ public class GameView {
         NomGAgnant=s;
     }
  
-
+    public void updateScore(){
+        String s="";
+        for (DataPlayer data : game.getDataPlayer()) {
+            s+=data.player.getNom()+" : "+data.player.getScore()+"  ";
+        }
+        scores.setText(s);
+    }
     public static Object launchNetworked() {
         return null;
     }
@@ -152,6 +190,7 @@ public class GameView {
                 game.eatFood(data);
                 Snake s = data.player.getSnake();
                 gameRoot.getChildren().add(s.getBody().get(s.getBody().size() - 1));
+                updateScore();
             }
         }
         return false;
@@ -175,6 +214,7 @@ public class GameView {
                    // System.out.println("collision animation ends...");
                     stop();
                 }
+                
                 last = now;
             }
         }
