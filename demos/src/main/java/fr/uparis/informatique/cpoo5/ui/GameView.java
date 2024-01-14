@@ -62,6 +62,7 @@ public class GameView {
             timer.stop();
             new Pause(gameStage, menu, scale, ia, solo,timer);
         });
+        
         content.setLeft(pause);
       
  

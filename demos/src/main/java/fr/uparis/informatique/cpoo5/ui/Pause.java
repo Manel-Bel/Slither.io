@@ -43,7 +43,7 @@ public class Pause {
         Replay.setOnAction(e -> new GameView(stage, scale, solo, ia,menus));
 
 
-        root.getChildren().addAll(title, menu, Replay);
+        root.getChildren().addAll(title, menu, reprendre,Replay);
 
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/All.css").toExternalForm());
