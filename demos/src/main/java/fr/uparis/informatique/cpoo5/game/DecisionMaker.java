@@ -20,6 +20,10 @@ public abstract class DecisionMaker {
         return snake;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public abstract void moveSnake(Coordinate coordinateFood, Coordinate coordinateS);
 
     // public void setDirectionSnake(KeyCode e, Coordinate coordinateFood,

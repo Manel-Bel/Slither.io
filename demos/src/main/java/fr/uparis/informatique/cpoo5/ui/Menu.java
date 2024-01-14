@@ -13,7 +13,7 @@ public class Menu {
     private VBox root;
     private Label title;
     public static final int winWidth = 1000;
-    public static final int winHeight = 600;
+    public static final int winHeight = 700;
 
     // the menu of the game
     public Menu(Stage stage, double scale) {
@@ -44,6 +44,9 @@ public class Menu {
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/All.css").toExternalForm());
         this.stage.setScene(scene);
+
+        stage.setResizable(false);
+        stage.centerOnScreen();
     }
 
     public Scene getScene() {
