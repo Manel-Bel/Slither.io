@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Manages the available snake colors.
+ * Manages the available colors.
  * 
  * @author : Belguenbour Manel
  */

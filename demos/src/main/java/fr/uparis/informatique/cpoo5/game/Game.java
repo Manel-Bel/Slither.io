@@ -251,22 +251,30 @@ public class Game {
         return this.grid;
     }
 
-    // get the number of rows
+    /*
+     * get the number of rows
+     */
     public int getNrows() {
         return nRows;
     }
 
-    // get the number of colones
+    /*
+     * get the number of colones
+     */
     public int getNcols() {
         return nCols;
     }
 
-    // get the food
+    /**
+     * get the food
+     */
     public Food getFood() {
         return this.food;
     }
 
-    // get the coordinate of the food
+    /**
+     * get the coordinate of the food
+     */
     public Coordinate getCoordFood() {
         return occupiedByFoodCell;
     }

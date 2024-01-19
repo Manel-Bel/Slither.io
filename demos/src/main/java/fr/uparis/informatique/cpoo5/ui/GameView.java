@@ -95,7 +95,7 @@ public class GameView {
     }
 
     /**
-     * creat the animation timer for the game
+     * add the grid to the screan
      */
     private void addGridToScreen() {
         for (int i = 0; i < game.getNrows(); i++) {
@@ -217,7 +217,7 @@ public class GameView {
      */
     class Animation extends AnimationTimer {
         long last = 0;
-        private final long waitInterval = 350_000_000; // 400ms
+        private final long waitInterval = 300_000_000; // 400ms
 
         @Override
         public void handle(long now) {
