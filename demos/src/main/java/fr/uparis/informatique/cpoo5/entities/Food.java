@@ -1,10 +1,11 @@
 package fr.uparis.informatique.cpoo5.entities;
 
+import fr.uparis.informatique.cpoo5.utils.ColorManager;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
- * The `Food` class represents a food item in the game.
+ * The Food class represents a food item in the game.
  * It is consumed by snakes to increase their score.
  * 
  * @author : Belguenbour Manel
@@ -18,7 +19,7 @@ public class Food {
     private final double size;
 
     /**
-     * Constructs a new instance of the `Food` class with the specified initial
+     * Constructs a new instance of the Food class with the specified initial
      * coordinates.
      *
      * @param x The initial x-coordinate of the food.
@@ -28,14 +29,14 @@ public class Food {
         size = 5;
         foodX = x;
         foodY = y;
-        color = Color.RED;
+        color = ColorManager.getAvailableColor();
         foodCircle = new Circle(x, y, size, color);
     }
 
     /**
      * Gets the circle representing the food.
      *
-     * @return The `Circle` object representing the food.
+     * @return The Circle object representing the food.
      */
     public Circle getFood() {
         return foodCircle;
@@ -77,5 +78,14 @@ public class Food {
     public void setY(int y) {
         this.foodY = y;
         foodCircle.setCenterY(y);
+    }
+
+    /**
+     * Gets the color of the food
+     *
+     * @return color of the food
+     */
+    public Color getColor() {
+        return color;
     }
 }

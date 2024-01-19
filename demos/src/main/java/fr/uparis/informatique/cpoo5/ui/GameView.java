@@ -22,8 +22,10 @@ import fr.uparis.informatique.cpoo5.game.Player;
 import fr.uparis.informatique.cpoo5.game.Game.DataPlayer;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
-/*
+/**
  * GameView : for modeling the Scene of the game
+ * 
+ * @author : Belguenbour Manel
  */
 public class GameView {
     private Stage gameStage;
@@ -83,8 +85,6 @@ public class GameView {
 
     /**
      * creat the animation timer for the game
-     * 
-     * @author : Belguenbour Manel
      */
     private void animate() {
         root.requestFocus();
@@ -96,8 +96,6 @@ public class GameView {
 
     /**
      * creat the animation timer for the game
-     * 
-     * @author : Belguenbour Manel
      */
     private void addGridToScreen() {
         for (int i = 0; i < game.getNrows(); i++) {
@@ -109,8 +107,6 @@ public class GameView {
 
     /**
      * add the instance of the snakes in the game root
-     * 
-     * @author : Belguenbour Manel
      */
     private void addSnakesToTheScreen() {
         LinkedList<DecisionMaker> p = new LinkedList<>();
@@ -124,7 +120,6 @@ public class GameView {
     /**
      * Set the keys to detect the movement of the snake
      * 
-     * @author : Belguenbour Manel
      */
     private void setKeysScene() {
         gamScene.setOnKeyPressed(e -> {
@@ -158,8 +153,6 @@ public class GameView {
 
     /**
      * handle the event of the pause button
-     * 
-     * @author : Belguenbour Manel
      */
     private void setKeyPause() {
         gameHeader.getPauseBtn().setOnAction((EventHandler<ActionEvent>) new EventHandler<ActionEvent>() {
@@ -181,12 +174,10 @@ public class GameView {
      * update the loop of the game
      * it iterate throw all the players
      * and moves them
-     * if it detect a collision withitself it means the end of the game
+     * if it detect a collision it means the end of the game
      * we quit the loop
      * else we check if the snake collided with the food
      * it eats it and update the score
-     * 
-     * @author : Belguenbour Manel
      */
     public boolean update() {
         if (game.getFood() == null) {
@@ -201,6 +192,11 @@ public class GameView {
             // check collision
             if (game.isAutoCollision(data)) {
                 // endOfGame = true;
+                return true;
+            }
+            DataPlayer p = game.checkDeath(data);
+            if (p != null) {
+                // TODO: HANDLE THE VIEW
                 return true;
             }
             if (game.checkCollisionWithFood(data)) {
@@ -218,12 +214,10 @@ public class GameView {
 
     /**
      * The Animation class represents the animation timer for the game
-     * 
-     * @author : Belguenbour Manel
      */
     class Animation extends AnimationTimer {
         long last = 0;
-        private final long waitInterval = 400_000_000; // 400ms
+        private final long waitInterval = 350_000_000; // 400ms
 
         @Override
         public void handle(long now) {
@@ -245,8 +239,6 @@ public class GameView {
 
     /**
      * The PauseWin class represents the pause window in the game.
-     * 
-     * @author : Belguenbour Manel
      */
     private class PauseWin {
         private Stage pauseStage;
@@ -256,8 +248,6 @@ public class GameView {
 
         /*
          * Constructs a new instance of the PauseWin class.
-         * 
-         * @author : Belguenbour Manel
          */
         public PauseWin() {
             this.root = new VBox(10);
@@ -290,8 +280,6 @@ public class GameView {
 
         /**
          * handle the event keys for the buttons
-         * 
-         * @author : Belguenbour Manel
          */
         private void handleBtn() {
             pauseStage.setOnCloseRequest(new EventHandler<WindowEvent>() {

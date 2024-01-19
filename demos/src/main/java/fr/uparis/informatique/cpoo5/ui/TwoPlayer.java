@@ -7,6 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Represents the user interface for selecting a game mode with two players.
+ * 
+ * @author Mohamed Halim Nafyssata
+ */
 public class TwoPlayer {
     private Stage stage;
     private Scene scene;
@@ -15,6 +20,12 @@ public class TwoPlayer {
     public static final int winWidth = 1000;
     public static final int winHeight = 600;
 
+    /**
+     * Constructs the TwoPlayer user interface.
+     *
+     * @param stage The primary stage of the application.
+     * @param scale The scale factor for the user interface.
+     */
     public TwoPlayer(Stage stage, double scale) {
         this.stage = stage;
         title = new Label("Choice");
@@ -40,6 +51,11 @@ public class TwoPlayer {
         this.stage.setScene(scene);
     }
 
+    /**
+     * Gets the scene of the TwoPlayer user interface.
+     *
+     * @return The Scene object.
+     */
     public Scene getScene() {
         return scene;
     }

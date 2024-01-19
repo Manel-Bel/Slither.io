@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 import fr.uparis.informatique.cpoo5.ui.Menu;
+import fr.uparis.informatique.cpoo5.utils.ColorManager;
 import fr.uparis.informatique.cpoo5.utils.Direction;
 
 public final class Snake {
@@ -16,6 +17,12 @@ public final class Snake {
     private double speed = 20;
     private Color color;
 
+    /**
+     * Constructs a new Snake instance with the specified position.
+     *
+     * @param x The x-coordinate of the snake.
+     * @param y The y-coordinate of the snake.
+     */
     public Snake(int x, int y) {
         // the head
         snakeX = x;
@@ -24,31 +31,52 @@ public final class Snake {
         this.body = new ArrayList<>();
         this.body.add(snakeRec);
         this.direction = null;
-        this.color = Color.GREEN;
+        this.color = ColorManager.getAvailableColor();
         snakeRec.setFill(color);
     }
 
-    // set the color
+    /**
+     * Sets the color of the snake.
+     *
+     * @param c The color to set.
+     */
     public void setColor(Color c) {
         this.color = c;
         this.snakeRec.setFill(c);
     }
 
+    /**
+     * Gets the current direction of the snake.
+     *
+     * @return The direction of the snake.
+     */
     public Direction getDirection() {
         return this.direction;
     }
 
-    // get the body
+    /**
+     * Gets the body of the snake.
+     *
+     * @return The body of the snake.
+     */
     public ArrayList<Rectangle> getBody() {
         return this.body;
     }
 
-    // get color
+    /**
+     * Gets the color of the snake.
+     *
+     * @return The color of the snake.
+     */
     public Color getColor() {
         return this.color;
     }
 
-    // setting the direction of the snake
+    /**
+     * Sets the direction of the snake.
+     *
+     * @param d The direction to set.
+     */
     public void setDirection(Direction d) {
         /**
          * if dirrection UP/DOWN: only can set RIGHT/LEFT
@@ -61,7 +89,9 @@ public final class Snake {
             this.direction = d;
     }
 
-    // to move the snake
+    /**
+     * Moves the snake in the current direction.
+     */
     public void move() {
         if (this.direction == null) {
             return;
@@ -109,7 +139,13 @@ public final class Snake {
         snakeRec.setY(snakeY);
     }
 
-    // check the colision
+    /**
+     * Checks if the snake has collided with the window boundaries.
+     *
+     * @param winWidth  The width of the game window.
+     * @param winHeight The height of the game window.
+     * @return True if the snake has collided, false otherwise.
+     */
     public boolean checkCollision(double winWidth, double winHeight) {
         for (Rectangle r : body) {
             if (r.getX() < 0 || r.getX() + snakeWidth > winWidth || r.getY() < 0
@@ -121,7 +157,9 @@ public final class Snake {
         return false;
     }
 
-    // extend the length of the snake
+    /**
+     * Extends the length of the snake by adding a new body part.
+     */
     public void extendBody() {
         Rectangle r = new Rectangle(snakeWidth, snakeHeight);
         Rectangle last = body.get(body.size() - 1);
@@ -147,14 +185,14 @@ public final class Snake {
                 System.out.println("Invalid direction");
                 break;
         }
-
-        // position the new rec at the last rec
-        // r.setX(body.get(body.size() - 1).getX());
-        // r.setY(body.get(body.size() - 1).getY() + snakeHeight);
         body.add(r);
     }
 
-    // to change the speed
+    /**
+     * Changes the speed of the snake.
+     *
+     * @param s The speed to add to the current speed.
+     */
     public void changeSpeed(int s) {
         speed += s;
     }

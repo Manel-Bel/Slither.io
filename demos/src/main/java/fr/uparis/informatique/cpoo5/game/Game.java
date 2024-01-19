@@ -8,6 +8,12 @@ import fr.uparis.informatique.cpoo5.entities.*;
 import fr.uparis.informatique.cpoo5.ui.Menu;
 import fr.uparis.informatique.cpoo5.utils.*;
 
+/**
+ * The Game class represents the main game logic, including the grid, players,
+ * and the game state.
+ * 
+ * @author : Belguenbour Manel
+ */
 public class Game {
     private Cell[][] grid;
     private int nRows, nCols;
@@ -17,10 +23,12 @@ public class Game {
     private LinkedList<DataPlayer> dataPlayers;
     private boolean solo, ia;
 
-    public Game() {
-
-    }
-
+    /**
+     * Constructs a new Game with the specified settings.
+     *
+     * @param solo True if the game is in solo mode, false otherwise.
+     * @param ia   True if the game includes AI, false otherwise.
+     */
     public Game(boolean solo, boolean ia) {
         this.solo = solo;
         this.ia = ia;
@@ -81,7 +89,11 @@ public class Game {
         }
     }
 
-    // generate foor at a random position
+    /**
+     * Generates a new food at a random position on the grid.
+     *
+     * @return The Circle representing the food.
+     */
     public Circle generateFood() {
         int[] tab = chooseFreeCell();
         tab[2] += (Cell.getCellWidth() / 2);
@@ -93,6 +105,11 @@ public class Game {
         return food.getFood();
     }
 
+    /**
+     * Updates the cell information based on the movement of the snakes.
+     *
+     * @param data The DataPlayer object containing information about the player.
+     */
     public void updateCell(DataPlayer data) {
         Direction d = data.player.getSnake().getDirection();
         if (d == null)
@@ -129,18 +146,29 @@ public class Game {
         data.occupiedCells.get(0).col = headC;
     }
 
-    // checks the collision between the head of the snake and the food
+    /**
+     * Checks for collision between the head of the snake and the food.
+     *
+     * @param data The DataPlayer object containing information about the player.
+     * @return True if there is a collision, false otherwise.
+     */
     public boolean checkCollisionWithFood(DataPlayer data) {
-        return (data.occupiedCells.get(0).row == occupiedByFoodCell.row) &&
-                (data.occupiedCells.get(0).col == occupiedByFoodCell.col);
+        return data.occupiedCells.getFirst().equals(occupiedByFoodCell);
+        // return (data.occupiedCells.get(0).row == occupiedByFoodCell.row) &&
+        // (data.occupiedCells.get(0).col == occupiedByFoodCell.col);
     }
 
+    /**
+     * Checks for auto-collision, where the snake collides with its own body.
+     *
+     * @param data The DataPlayer object containing information about the player.
+     * @return True if there is auto-collision, false otherwise.
+     */
     public boolean isAutoCollision(DataPlayer data) {
         // normally we retrive the cells based of the snake
         for (int i = 0; i < data.occupiedCells.size() - 1; i++) {
             for (int j = i + 1; j < data.occupiedCells.size(); j++) {
-                if (data.occupiedCells.get(i).row == data.occupiedCells.get(j).row
-                        && data.occupiedCells.get(i).col == data.occupiedCells.get(j).col) {
+                if (data.occupiedCells.get(i).equals(data.occupiedCells.get(j))) {
                     System.out.println("Auto collision!");
                     return true;
                 }
@@ -149,8 +177,13 @@ public class Game {
         return false;
     }
 
-    // remove the food from the frame and extend the snake
+    /**
+     * Handles the removal of food from the frame and extends the snake.
+     *
+     * @param data The DataPlayer object containing information about the player.
+     */
     public void eatFood(DataPlayer data) {
+        ColorManager.releaseColor(food.getColor());
         food = null;
         Snake s = data.player.getSnake();
         s.extendBody();
@@ -164,14 +197,56 @@ public class Game {
         data.occupiedCells.add(c);
     }
 
+    /**
+     * Checks for collision with other snakes and determines if a player dies.
+     * If a collision occurs, the player with the lower or equal score is considered
+     * dead
+     *
+     * @param dataCurrent The player for whom collision is being checked.
+     * @return The player who dies in the collision, or null if no player dies.
+     */
+    public DataPlayer checkDeath(DataPlayer dataCurrent) {
+        for (DataPlayer otherPlayer : dataPlayers) {
+            if (otherPlayer != dataCurrent) {
+                for (Coordinate c : otherPlayer.occupiedCells) {
+                    if (dataCurrent.occupiedCells.getFirst().equals(c)) {
+                        if (dataCurrent.player.score <= otherPlayer.player.score) {
+                            System.out.println("collision ... death of " + dataCurrent.player);
+                            return dataCurrent;
+                        } else {
+                            System.out.println("collision ... death of " + otherPlayer.player);
+                            return otherPlayer;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Checks if the game has ended.
+     *
+     * @return True if the game has ended, false otherwise.
+     */
     public boolean isGameEnded() {
         return endOfGame;
     }
 
+    /**
+     * Gets the list of DataPlayer objects representing the players in the game.
+     *
+     * @return The list of DataPlayer objects.
+     */
     public LinkedList<DataPlayer> getDataPlayer() {
         return dataPlayers;
     }
 
+    /**
+     * Gets the 2D array representing the grid of cells in the game.
+     *
+     * @return The grid of cells.
+     */
     public Cell[][] getGrid() {
         return this.grid;
     }
@@ -196,10 +271,18 @@ public class Game {
         return occupiedByFoodCell;
     }
 
+    /**
+     * Inner class representing data related to a player.
+     */
     public final class DataPlayer {
         public DecisionMaker player;
         public LinkedList<Coordinate> occupiedCells;
 
+        /**
+         * Constructor for the DataPlayer class.
+         *
+         * @param p The DecisionMaker object representing the player.
+         */
         public DataPlayer(DecisionMaker p) {
             this.player = p;
             this.occupiedCells = new LinkedList<>();

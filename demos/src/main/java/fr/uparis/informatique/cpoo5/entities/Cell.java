@@ -86,11 +86,6 @@ public class Cell extends Rectangle {
         return "Cell [posX=" + getX() + ", posY=" + getY() + ", width=" + getWidth() +
                 ", height=" + getHeight() + " is occupied ?:" + occupied + "]";
     }
-    /*
-     * + ", color=0x" + Integer.toHexString((int) (color).getRed()) +
-     * Integer.toHexString((int) (color).getGreen()) + Integer.toHexString((int)
-     * (color).getBlue())
-     */
 
     /**
      * Gets the width of a cell.

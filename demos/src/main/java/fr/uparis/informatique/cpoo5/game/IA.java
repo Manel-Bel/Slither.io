@@ -6,7 +6,7 @@ import fr.uparis.informatique.cpoo5.utils.Direction;
 import javafx.scene.paint.Color;
 
 /**
- * The `IA` class represents an artificial intelligence player in the game.
+ * The IA class represents an artificial intelligence player in the game.
  * It extends the `DecisionMaker` class and implements the logic for the bot's
  * movements.
  * 

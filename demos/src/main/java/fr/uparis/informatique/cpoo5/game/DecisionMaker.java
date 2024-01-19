@@ -7,6 +7,8 @@ import fr.uparis.informatique.cpoo5.utils.Coordinate;
  * The DecisionMaker class represents an abstract decision maker in the game.
  * It defines the common behavior for entities that make decisions for snakes,
  * such as players and AI.
+ * 
+ * @author : Belguenbour Manel
  */
 public abstract class DecisionMaker {
     String name;
@@ -35,8 +37,7 @@ public abstract class DecisionMaker {
         return snake;
     }
 
-    /*
-     * /**
+    /**
      * Gets the name of the decision maker.
      *
      * @return The name of the decision maker.
